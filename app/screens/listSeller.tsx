@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import {
@@ -22,7 +23,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { mapStyle } from "../../constants/mapStyle";
 import FONTS from "../../constants/FONTS";
-import ReviewBlock from "../../components/Review/reviewBlock";
+import CustomText from "../../components/CustomText";
 
 interface IProduct {
   description: string;
@@ -35,7 +36,7 @@ interface IProduct {
   merchant: string;
 }
 
-export default function ListVet({ navigation }) {
+export default function ListSeller({ navigation }) {
   const { colors } = theme;
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(
@@ -132,6 +133,23 @@ export default function ListVet({ navigation }) {
     );
   };
 
+  const ReviewCard=()=>{
+    return <View style={{backgroundColor:colors.white, width:wp(65), maxHeight:200 ,padding:10, borderRadius:10, marginRight:10}}>
+    <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:10, width:'25%'}}>
+
+<Octicons name="star-fill" size={14} color={colors.main_sec} />
+<Octicons name="star-fill" size={14} color={colors.main_sec} />
+<Octicons name="star-fill" size={14} color={colors.main_sec} />
+<Octicons name="star-fill" size={14} color={colors.main_sec} />
+<Octicons name="star" size={14} color={colors.main_sec} />
+</View>
+<CustomText color={colors.text} font={FONTS.Regular} txt="userxla_  23 Jun 2023"  />
+<CustomText  font={FONTS.Regular} txt="Texto bem grande para exemplificar o a descricao do vereruabai
+      deisbdasbsda. Texto bem grande para exemplificar o a descricao
+      do vereruabai deisbdasbsda"  />
+</View>
+  }
+
   const TitleHeader = ({ letfTitle, rightTitle = "" }) => {
     return (
       <View
@@ -204,7 +222,7 @@ export default function ListVet({ navigation }) {
           style={{
             width: "90%",
             height: hp(20),
-            backgroundColor: colors.bg_primary,
+            backgroundColor:'rgba(255,255,255,0.8)',
             marginBottom: 20,
             alignSelf: "center",
             borderRadius: 20,
@@ -220,7 +238,7 @@ export default function ListVet({ navigation }) {
               justifyContent: "space-between",
             }}
           >
-            <View>
+            <View style={{width:'70%'}}>
               <Text
                 style={{
                   color: colors.text_dark,
@@ -231,7 +249,7 @@ export default function ListVet({ navigation }) {
                 Dr Kelvin McClein
               </Text>
               <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
-                Veterinario
+                Vendedor
               </Text>
             </View>
             <Text
@@ -251,16 +269,18 @@ export default function ListVet({ navigation }) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+
             }}
           >
-            <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
-              Experiencia: 10 anos
+            <Text style={{width:'70%', color: colors.text_detail, fontWeight: "600",fontSize:14, fontFamily:'SpaceMono' }}>
+              Membro desde 25/12/2000
             </Text>
             <TouchableOpacity
               style={{
                 backgroundColor: colors.text_dark,
                 padding: 10,
                 borderRadius: 10,
+                
               }}
             >
               <Text style={{ color: colors.white, fontWeight: "bold" }}>
@@ -346,8 +366,8 @@ export default function ListVet({ navigation }) {
 
           <View style={{ marginTop: 20, width:'90%' }}>
             <TitleHeader
-              letfTitle={"Acerca do Veterinario"}
-              rightTitle="⭐4.8"
+              letfTitle={"Acerca do Vendedor"}
+              
             />
 
             <View>
@@ -358,8 +378,26 @@ export default function ListVet({ navigation }) {
               </Text>
             </View>
 
+            <View style={{marginTop:20, height:hp(35)}}>
+              
+
+              <TitleHeader letfTitle={'Aval dos usuários(7799)'} rightTitle="⭐4.8 >" />
+              
+
+              <ScrollView horizontal   contentContainerStyle={{}}>
+                <ReviewCard />
+                <ReviewCard />
+                <TouchableOpacity style={{padding:20, alignItems:'center', marginTop:30}}>
+<CustomText font={FONTS.Bold} txt="Ver todas >" />
+                </TouchableOpacity>
+              </ScrollView>
+              <TouchableOpacity style={{backgroundColor:colors.white, width:'90%', height:40, marginTop:10, borderRadius:5, paddingLeft:20, alignItems:'flex-start', justifyContent:'center'}} >
+                <Text>Avaliar</Text>
+              </TouchableOpacity>
+            </View>
+
             <View style={{ marginTop: 20 }}>
-              <TitleHeader letfTitle={"Preçário"} />
+              <TitleHeader letfTitle={"Mais do vendedor"} />
               <View
                 style={{
                   flexDirection: "row",
@@ -368,25 +406,12 @@ export default function ListVet({ navigation }) {
                   marginTop: 10,
                 }}
               >
-                <Text
-                  style={{
-                    color: colors.text_dark,
-                    fontSize: 14,
-                    fontWeight: "400",
-                    fontFamily:FONTS.Regular
-                  }}
-                >
-                  Consulta
-                </Text>
-                <Text
-                  style={{
-                    color: colors.main_sec,
-                    fontSize: 14,
-                    fontWeight: "800",
-                  }}
-                >
-                  800MZN
-                </Text>
+               <Image source={require('../../assets/images/Puppy2.png')} style={{width:'30%', aspectRatio:1, backgroundColor:colors.main_sec, borderRadius:10}} />
+               <View style={{width:'65%'}}>
+                <CustomText txt="Rottweiler"  />
+                <CustomText txt="Rottweiler"  />
+                <CustomText fontSize={20} txt="12.000.00MZN"  />
+               </View>
               </View>
               <Divider />
               <View
@@ -397,25 +422,12 @@ export default function ListVet({ navigation }) {
                   marginTop: 10,
                 }}
               >
-                <Text
-                  style={{
-                    color: colors.text_dark,
-                    fontSize: 14,
-                    fontWeight: "400",
-                    fontFamily:FONTS.Regular
-                  }}
-                >
-                  Desparasitar
-                </Text>
-                <Text
-                  style={{
-                    color: colors.main_sec,
-                    fontSize: 14,
-                    fontWeight: "800",
-                  }}
-                >
-                  1.800MZN
-                </Text>
+               <Image source={require('../../assets/images/petshop.jpeg')} style={{width:'30%', aspectRatio:1, backgroundColor:colors.main_sec, borderRadius:10}} />
+               <View style={{width:'65%'}}>
+                <CustomText txt="Rottweiler"  />
+                <CustomText txt="Rottweiler"  />
+                <CustomText fontSize={20} txt="12.000.00MZN"  />
+               </View>
               </View>
               <Divider />
               <View
@@ -426,30 +438,23 @@ export default function ListVet({ navigation }) {
                   marginTop: 10,
                 }}
               >
-                <Text
-                  style={{
-                    color: colors.text_dark,
-                    fontSize: 14,
-                    fontWeight: "400",
-                    fontFamily:FONTS.Regular
-                  }}
-                >
-                  Vacinacao
-                </Text>
-                <Text
-                  style={{
-                    color: colors.main_sec,
-                    fontSize: 14,
-                    fontWeight: "800",
-                  }}
-                >
-                  2.000MZN
-                </Text>
+               <Image source={require('../../assets/images/Puppy2.png')} style={{width:'30%', aspectRatio:1, backgroundColor:colors.main_sec, borderRadius:10}} />
+               <View style={{width:'65%'}}>
+                <CustomText txt="Rottweiler"  />
+                <CustomText txt="Rottweiler"  />
+                <CustomText fontSize={20} txt="12.000.00MZN"  />
+               </View>
               </View>
               <Divider />
+              <View style={{width:'100%', alignItems:'center', justifyContent:'center', marginTop:10}}>
+                <TouchableOpacity style={{padding:5, backgroundColor:colors.text_dark, borderRadius:5}}>
+                  <CustomText txt="Ver mais +" color={colors.white} />
+                </TouchableOpacity>
+              </View>
+             
             </View>
           </View>
-<ReviewBlock />
+
           <View style={{ marginTop: 20 }}>
             <TitleHeader letfTitle={"Localização"} rightTitle="Maputo" />
           </View>

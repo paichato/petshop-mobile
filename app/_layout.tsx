@@ -33,6 +33,7 @@ import ShopVets from './screens/shopVets';
 import ShopStores from './screens/shopStores';
 import ShopServices from './screens/shopServices';
 import ListVet from './screens/listVet';
+import ListSeller from './screens/listSeller';
 // import ShopDogs from './screens/shopDogs';
 
 export {
@@ -91,7 +92,7 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-<ListVet/>
+<ListSeller/>
         {/* <Stack initialRouteName='Onboarding' > */}
           {/* <Stack.Screen name="Onboarding" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
