@@ -23,7 +23,7 @@ interface IProduct{
     merchant: string;
 }
 
-export default function Login() {
+export default function Home() {
 
     const {colors}=theme;
     const router = useRouter();

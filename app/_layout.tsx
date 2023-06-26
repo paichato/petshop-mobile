@@ -8,6 +8,8 @@ import Onboarding from './screens';
 import Shop from './screens/shop';
 import GoPro from './screens/GoPro';
 import Login from './screens/login';
+import ShopDogs from './screens/shopDogs';
+// import ShopDogs from './screens/shopDogs';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,7 +49,7 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-<Login/>
+<ShopDogs/>
         {/* <Stack initialRouteName='Onboarding' > */}
           {/* <Stack.Screen name="Onboarding" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
