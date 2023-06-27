@@ -15,7 +15,7 @@ import {
 } from "react-native-responsive-screen";
 import Colors from "../../constants/Colors";
 import theme from "../../styles/theme";
-import { Octicons } from "@expo/vector-icons";
+import { Ionicons, Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Link, useRouter } from "expo-router";
 
@@ -24,6 +24,7 @@ import MapViewDirections from "react-native-maps-directions";
 import { mapStyle } from "../../constants/mapStyle";
 import FONTS from "../../constants/FONTS";
 import CustomText from "../../components/CustomText";
+import ImageView from "react-native-image-viewing"
 
 interface IProduct {
   description: string;
@@ -42,6 +43,7 @@ export default function ListSeller({ navigation }) {
   const [selectedImage, setSelectedImage] = useState(
     require("../../assets/images/services.jpg")
   );
+  const [visibleImage, setIsVisibleImage] = useState(false);
 
   const handleImageSelection = (img) => {
     setSelectedImage(img);
@@ -246,7 +248,7 @@ export default function ListSeller({ navigation }) {
                   fontFamily:FONTS.Bold
                 }}
               >
-                Dr Kelvin McClein
+                Swat k9
               </Text>
               <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
                 Vendedor
@@ -397,7 +399,7 @@ export default function ListSeller({ navigation }) {
             </View>
 
             <View style={{ marginTop: 20 }}>
-              <TitleHeader letfTitle={"Mais do vendedor"} />
+              <TitleHeader letfTitle={"Mais do vendedor(48)"} />
               <View
                 style={{
                   flexDirection: "row",
@@ -457,7 +459,7 @@ export default function ListSeller({ navigation }) {
 
           <View style={{ marginTop: 20 }}>
             <TitleHeader letfTitle={"Localização"} rightTitle="Maputo" />
-          </View>
+          
 
           {/* <MapContainer /> */}
           <MapView
@@ -521,37 +523,23 @@ export default function ListSeller({ navigation }) {
               ></View>
             </Marker>
           </MapView>
+          </View>
+
+          <View style={{marginTop:20}}>
+            <TouchableOpacity style={{width:'100%',  padding:20, borderRadius:10, backgroundColor:colors.white, borderColor:colors.text_dark, borderWidth:2}}>
+              <CustomText txt="Denunciar" font={FONTS.Bold} color={colors.text_dark} />
+            </TouchableOpacity>
+          </View>
         </View>
-        {/* <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          marginTop: 10,
-        }}
-      >
-        <Octicons name="apps" size={24} color={colors.header} />
-        <Octicons name="credit-card" size={24} color={colors.header} />
-      </View>
-
-      <View style={{alignItems:'center'}}>
-        <Text style={{ fontSize: 22, fontWeight: "800" }}>Serviços</Text>
-        <Text style={{ fontSize: 22, color: colors.main_sec }}>{`(200)`}</Text>
-      </View> */}
-
-        {/* <ScrollView
-        style={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-
-      </ScrollView> */}
+   
       </ScrollView>
+
+      <ImageView
+  images={[selectedImage]}
+  imageIndex={0}
+  visible={visibleImage}
+  onRequestClose={() => setIsVisibleImage(false)}
+/>
       <TouchableOpacity
         style={{
           position: "absolute",
@@ -568,7 +556,7 @@ export default function ListSeller({ navigation }) {
         }}
       >
         <View style={{ width: "80%", flexDirection: "row" }}>
-          <Octicons name="calendar" size={24} color={colors.white} />
+        <Ionicons name="cafe-outline" size={24} color={colors.white} />
           <Text
             style={{
               color: colors.white,
@@ -591,7 +579,7 @@ export default function ListSeller({ navigation }) {
           |
         </Text>
         <TouchableOpacity style={{ width: "10%" }}>
-          <Octicons name="webhook" size={24} color={colors.white} />
+        <Ionicons name="logo-whatsapp" size={24} color={colors.white} />
         </TouchableOpacity>
       </TouchableOpacity>
     </>
