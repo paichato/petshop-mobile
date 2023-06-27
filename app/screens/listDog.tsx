@@ -39,11 +39,11 @@ interface IProduct {
   merchant: string;
 }
 
-export default function ListStore({ navigation }) {
+export default function ListDog({ navigation }) {
   const { colors } = theme;
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(
-    require("../../assets/images/Merec.jpg")
+    require("../../assets/images/Puppy2.png")
   );
   const [visibleImage, setIsVisibleImage] = useState(false);
 
@@ -192,7 +192,7 @@ export default function ListStore({ navigation }) {
                   fontFamily:FONTS.Bold
                 }}
                 >
-                Merec
+                Swat K9
               </Text>
               <View style={{flexDirection:'row'}}>
 
@@ -201,7 +201,7 @@ export default function ListStore({ navigation }) {
               </View>
                 </View>
               <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
-                Loja
+                Proprietário
               </Text>
             </View>
             <Text
@@ -250,6 +250,49 @@ export default function ListStore({ navigation }) {
     );
   };
 
+  const ColorView = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          width: "25%",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <View
+          style={{
+            width: 15,
+            aspectRatio: 1,
+            backgroundColor: colors.main,
+            borderRadius: 100,
+          }}
+        ></View>
+        <View
+          style={{
+            width: 15,
+            aspectRatio: 1,
+            backgroundColor: colors.main_sec,
+            borderRadius: 100,
+          }}
+        ></View>
+      </View>
+    );
+  };
+
+  const PercentItem=({completed=20,title='Agressividade'})=>{
+    return <View style={{marginTop:10}}>
+    <CustomText txt={title} font={FONTS.SemiBold} />
+    <View style={{width:wp(35)}}>
+
+<View style={{width:'100%', backgroundColor:colors.main_sec_10, height:5, borderRadius:10}}></View>
+<View style={{width:`${completed}%`, backgroundColor:colors.main_sec, height:5, position:'absolute', borderRadius:10}}>
+    </View>
+
+</View>
+  </View>
+  }
+
   return (
     <>
       <ScrollView
@@ -288,7 +331,7 @@ export default function ListStore({ navigation }) {
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               onPress={() =>
-                handleImageSelection(require("../../assets/images/Merec.jpg"))
+                handleImageSelection(require("../../assets/images/Puppy2.png"))
               }
               style={{
                 width: "20%",
@@ -299,7 +342,7 @@ export default function ListStore({ navigation }) {
               }}
             >
               <Image
-                source={require("../../assets/images/Merec.jpg")}
+                source={require("../../assets/images/Puppy2.png")}
                 style={{ width: "100%", height: "100%" }}
               />
             </TouchableOpacity>
@@ -324,25 +367,135 @@ export default function ListStore({ navigation }) {
             </TouchableOpacity>
           </View>
 
+          <View style={{width:wp(90), flexDirection:'row', marginTop:20, justifyContent:'center', flexWrap:'wrap', flexShrink:2 }}>
+<View style={{ width:'30%', marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'center', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Preço" font={FONTS.SemiBold} color={colors.main_sec} />
+<CustomText txt="12.000" font={FONTS.SemiBold} fontSize={20} color={colors.text_detail} />
+<CustomText txt="MZN" font={FONTS.SemiBold} color={colors.text_detail} />
+</View>
+<View style={{ width:'30%',marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'center', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Idade" font={FONTS.SemiBold} color={colors.main_sec} />
+<CustomText txt="6" font={FONTS.SemiBold} fontSize={20} color={colors.text_detail} />
+<CustomText txt="Meses" font={FONTS.SemiBold} color={colors.text_detail} />
+</View>
+<View style={{ width:'30%',marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'space-evenly', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Cor" font={FONTS.SemiBold} color={colors.main_sec} />
+<ColorView />
+<CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
+</View>
+<View style={{ width:'30%',marginTop:10,marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'center', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Sexo" font={FONTS.SemiBold} color={colors.main_sec} />
+<CustomText txt="♂️" font={FONTS.SemiBold} fontSize={20} color={colors.main_sec} />
+<CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
+</View>
+<View style={{ width:'30%',marginTop:10, marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'center', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Vacinado" font={FONTS.SemiBold} color={colors.main_sec} />
+<CustomText txt="Sim" font={FONTS.SemiBold} fontSize={20} color={colors.text_detail} />
+<CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
+</View>
+<View style={{ width:'30%',marginTop:10, marginRight:10, aspectRatio:1, backgroundColor:colors.white, borderRadius:10, alignItems:'center', justifyContent:'center', shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+<CustomText txt="Raça" font={FONTS.SemiBold} color={colors.main_sec} />
+<CustomText txt="Bull Mastiff" font={FONTS.SemiBold} fontSize={14} color={colors.text_detail} />
+<CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
+</View>
+          </View>
+
           <View style={{ marginTop: 20, width:'90%' }}>
             <TitleHeader
-              letfTitle={"Acerca da loja"}
+              letfTitle={"Acerca da Cão"}
               
             />
+             <TouchableOpacity style={{width:'30%'}}>
+            <CustomText txt="vacinado 💉"  
+              styles={{
+                color: colors.white,
+                fontSize: 12,
+                fontWeight: "800",
+                backgroundColor: colors.sucess,
+                borderRadius: 5,
+                padding: 5,
+              }}
+            />
+              
+         
+          </TouchableOpacity>
          
 
             <View>
+
               <Text style={{ color: colors.text, fontFamily:FONTS.Regular }}>
                 Texto bem grande para exemplificar o a descricao do vereruabai
                 deisbdasbsda. Texto bem grande para exemplificar o a descricao
                 do vereruabai deisbdasbsda
               </Text>
+
+              <CustomText txt="Bull Mastiff" fontSize={18} font={FONTS.SemiBold} styles={{marginTop:20}} />
+              <Text style={{ color: colors.text, fontFamily:FONTS.Regular }}>
+                Texto bem grande para exemplificar o a descricao do vereruabai
+                deisbdasbsda. Texto bem grande para exemplificar o a descricao
+                do vereruabai deisbdasbsda
+              </Text>
+<View style={{width:wp(90), flexWrap:'wrap', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+
+              <PercentItem completed={50} />
+              <PercentItem title="Adaptabilidade"  />
+              <PercentItem title="Pelos" />
+              <PercentItem title="Saúde" />
+</View>
             </View>
 
           
 
             <View style={{ marginTop: 20 }}>
-              <TitleHeader letfTitle={"Mais da loja(48)"} />
+              <TitleHeader letfTitle={"Mais do tipo(48)"} />
               <TouchableOpacity
                 style={{
                   flexDirection: "row",
@@ -467,7 +620,7 @@ export default function ListStore({ navigation }) {
           </MapView>
           </View>
 
-          <View style={{marginTop:20, height:hp(35), width:'90%'}}>
+          {/* <View style={{marginTop:20, height:hp(35), width:'90%'}}>
               
 
               <TitleHeader letfTitle={'Aval dos usuários(7799)'} rightTitle="⭐4.8 >" />
@@ -483,7 +636,7 @@ export default function ListStore({ navigation }) {
               <TouchableOpacity style={{backgroundColor:colors.white, width:'90%', height:40, marginTop:10, borderRadius:5, paddingLeft:20, alignItems:'flex-start', justifyContent:'center'}} >
                 <Text>Avaliar</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
           <View style={{marginTop:20}}>
             <TouchableOpacity style={{width:'100%',  padding:20, borderRadius:10, backgroundColor:colors.white, borderColor:colors.text_dark, borderWidth:2}}>
