@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, TextInput, ImageBackground } from 'react-native'
 import React, { useRef, useState } from 'react'
 import {
     widthPercentageToDP as wp,
@@ -11,6 +11,10 @@ import { Link, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SpecialInput } from '../../components/SpecialInput';
 import { MainFullRoundedBUtton } from '../../components/Buttons/MainFullRoundedButton';
+import CustomText from '../../components/CustomText';
+import Carousel from 'react-native-snap-carousel';
+import FONTS from '../../constants/FONTS';
+
 
 interface IProduct{
     description:string;
@@ -31,6 +35,7 @@ export default function Home() {
     const [phonenumber, setPhonumber] = useState("");
     const [password, setPassword] = useState("");
     const [errorLocal, setErrorLocal] = useState("");
+    let swipeRef = null;
 
 
 
@@ -49,30 +54,142 @@ export default function Home() {
     
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:colors.white,  }}>
-      
-      <View style={{height:hp(35), width:'100%', alignItems:'center', flexDirection:'column', justifyContent:'center'}}>
-      <Image source={require('../../assets/images/Puppy2.png')} style={{height:150, width:150, resizeMode:'contain', backgroundColor:colors.main_30,  borderRadius:10}} />
-      <Text style={{fontSize:24, color:colors.main, fontWeight:'800', width:'70%', textAlign:'center'}}>Dapata</Text>
-      <Text style={{fontSize:14, color:colors.text, fontWeight:'400', width:'70%',textAlign:'center'}}>Encontre o seu animal</Text>
+    <ScrollView contentContainerStyle={{ alignItems: "center", backgroundColor:colors.bg_primary, paddingTop:40, paddingBottom:200}} style={{ flex: 1  }}>
+
+      <View style={{width:wp(100), padding:10, flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+        <View style={{alignItems:'center', flexDirection:'row'}}>
+
+<CustomText txt='Bem vindo, ' fontSize={18} />
+<CustomText txt='fulano' fontSize={18} font={FONTS.Bold} color={colors.main_sec} />
+        </View>
+<View style={{flexDirection:'row', width:wp(20), alignItems:'center', justifyContent:'space-around'}}>
+  <TouchableOpacity>
+    <Octicons name='search' size={24} color={colors.text_dark} />
+  </TouchableOpacity>
+  <TouchableOpacity>
+    <Octicons name='heart' size={24} color={colors.text_dark} />
+  </TouchableOpacity>
+    
+</View>
+
 
       </View>
-<View style={{width:'100%', alignItems:'center', justifyContent:'center', height:hp(60), backgroundColor:colors.white, borderRadius:10}}>
-  {/* <Text style={{fontWeight:'800', color:colors.main}}>Numero de celular</Text>
-<TextInput style={{backgroundColor:colors.main_sec,color:colors.white, width:'80%', height:40, borderRadius:100, padding:5, paddingLeft:20, fontWeight:'800'}} /> */}
-<SpecialInput label='Numero de celular'  errorLocal={errorLocal} SetInpuValue={setPhonumber} inputRef={keyboardRef} inputValue={phonenumber} />
-<View style={{height:20}}></View>
-<SpecialInput isPass label='Senha' errorLocal={errorLocal} SetInpuValue={setPassword} inputRef={keyboardRef} inputValue={password} />
+<View style={{width:wp(90), height:hp('20%'), borderRadius:10,  alignItems:'flex-start',justifyContent:'center',overflow:'hidden', marginTop:10}}>
+<Carousel
+layout='stack'
+              ref={(c) => (swipeRef = c)}
+              data={[{id:0, img:require('../../assets/images/kulukapub.jpg')},{id:1, img:require('../../assets/images/kulukapub2.jpg')}, {id:2}]}
+              renderItem={({ item }) => (
+                <View style={{backgroundColor:colors.main_sec, height:hp(20), width:wp(90), borderRadius:10, overflow:'hidden' }}>
+                  {item.img  ? <Image source={item.img} style={{width:'100%', height:'100%', resizeMode:'cover'}}/> : 
+                  <View style={{width:'100%', height:'100%', backgroundColor:colors.line, padding:20, flexDirection:'row'}}>
+                    <View style={{width:'50%'}}>
+                      <CustomText txt='Um texto sobre animais para ver se cabe aqui' />
+                      <TouchableOpacity style={{backgroundColor:colors.text_dark, width:'60%', height:40, borderRadius:10, padding:10, marginTop:20}}>
+                      <CustomText txt='Apoiar 🫶🏼' color={colors.white} />
 
-<View style={{width:'100%', paddingHorizontal:40, marginTop:40}}>
-  <MainFullRoundedBUtton rounded={true} title='Iniciar sessão' customTextStyle={{fontSize:18}}  />
-  <MainFullRoundedBUtton rounded={true} title='Criar conta' primary={false} customTextStyle={{fontSize:18, fontWeight:'800', color:colors.main_50}} customStyles={{backgroundColor:colors.white}} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{width:'50%'}}>
+                      <Image source={require('../../assets/images/pet-belt.png')} style={{width:'100%', height:'100%'}} />
+                    </View>
+                  </View>
+                  }
+                  
+                  <CustomText txt={item.id} />
 
-  <TouchableOpacity style={{marginTop:10,width:'100%',  alignItems:'center',justifyContent:'center'}}>
-    <Text style={{color:colors.main_50, fontWeight:'700'}}>Esqueci senha</Text>
-  </TouchableOpacity>
+                </View>
+
+              )}
+              sliderWidth={wp('90%')}
+        itemWidth={300}
+        firstItem={1}
+        loop
+        autoplay
+        autoplayDelay={500}
+        autoplayInterval={2000}
+            />
 </View>
+
+      <View style={{width:wp(100), padding:10, marginTop:20,}}>
+        <View style={{width:'100%'}}>
+<CustomText txt='Serviços' fontSize={22} font={FONTS.Bold} />
+        </View>
+        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+        <View style={{width:'47%'}}>
+<TouchableOpacity style={{backgroundColor:colors.main_sec, width:'100%', height:hp(35), borderRadius:20, shadowColor: colors.main_sec,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+  <Image source={require('../../assets/images/Puppy2.png')} style={{height:'100%', width:'100%'}} />
+  <View style={{backgroundColor:colors.white, width:'95%', height:'50%', position:'absolute', bottom:3, borderRadius:20, alignSelf:'center', padding:10}}>
+<CustomText txt='Caẽs' font={FONTS.SemiBold} fontSize={18}  />
+<CustomText txt='Procure o teu companheiro com os melhores vendedores' font={FONTS.Regular} color={colors.text}  />
+  </View>
+
+</TouchableOpacity>
+<TouchableOpacity style={{backgroundColor:colors.main_sec, width:'100%', height:hp(25), borderRadius:20, marginTop:10, shadowColor: colors.main_sec,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+  <Image source={require('../../assets/images/adest.png')} style={{height:'100%', width:'100%'}} />
+  <View style={{backgroundColor:colors.white, width:'95%', height:'50%', position:'absolute', bottom:3, borderRadius:20, alignSelf:'center', padding:10}}>
+<CustomText txt='Diversos' font={FONTS.SemiBold} fontSize={18}  />
+<CustomText txt='Adestramento, banho, tosa, etc  ' font={FONTS.Regular} color={colors.text}  />
+  </View>
+
+</TouchableOpacity>
+        </View>
+        <View style={{width:'47%'}}>
+<TouchableOpacity style={{backgroundColor:colors.main_sec, width:'100%', height:hp(25), borderRadius:20,shadowColor: colors.main_sec,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9}}>
+  <Image source={require('../../assets/images/pet-belt.png')} style={{height:'60%', width:'100%', resizeMode:'contain'}} />
+  <View style={{backgroundColor:colors.white, width:'95%', height:'50%', position:'absolute', bottom:3, borderRadius:20, alignSelf:'center', padding:10,}}>
+<CustomText txt='Produtos' font={FONTS.SemiBold} fontSize={18}  />
+<CustomText txt='Ração, coleiras, antipulgas, etc ' font={FONTS.Regular} color={colors.text}  />
+  </View>
+
+</TouchableOpacity>
+        <TouchableOpacity style={{backgroundColor:colors.main_sec, width:'100%', height:hp(35), borderRadius:20, marginTop:10, overflow:'hidden'}}>
+  <Image source={require('../../assets/images/vetnobg.png')} style={{height:'100%', width:'100%'}} />
+  <View style={{backgroundColor:colors.white, width:'95%', height:'50%', position:'absolute', bottom:3, borderRadius:20, alignSelf:'center', padding:10}}>
+<CustomText txt='Veterinários' font={FONTS.SemiBold} fontSize={18}  />
+<CustomText txt='Os melhores veterinários, para vacinação, desparazitação, consultas,etc ' fontSize={12} font={FONTS.Regular} color={colors.text}  />
+  </View>
+
+</TouchableOpacity>
 </View>
+        </View>
+<TouchableOpacity style={{width:'100%', height:hp(25), backgroundColor:colors.main_sec, borderRadius:20, marginTop:10}}>
+<Image source={require('../../assets/images/building.png')} style={{height:'100%', width:'100%', resizeMode:'contain'}} />
+  <View style={{backgroundColor:colors.white, width:'95%', height:'50%', position:'absolute', bottom:3, borderRadius:20, alignSelf:'center', padding:10}}>
+<CustomText txt='Lojas' font={FONTS.SemiBold} fontSize={18}  />
+<CustomText txt='Pesquise por lojas físicas ' fontSize={12} font={FONTS.Regular} color={colors.text}  />
+  </View>
+</TouchableOpacity>
+
+      </View>
+
+    
+
+
       
 
      
@@ -87,6 +204,6 @@ export default function Home() {
      
 
     
-    </SafeAreaView>
+    </ScrollView>
   )
 }
