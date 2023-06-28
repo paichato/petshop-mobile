@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <ScrollView contentContainerStyle={{ alignItems: "center", backgroundColor:colors.bg_primary, paddingTop:40, paddingBottom:200}} style={{ flex: 1  }}>
 
-      <View style={{width:wp(100), padding:10, flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+      <View style={{width:wp(100), padding:20, flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
         <View style={{alignItems:'center', flexDirection:'row'}}>
 
 <CustomText txt='Bem vindo, ' fontSize={18} />
@@ -111,7 +111,7 @@ layout='stack'
             />
 </View>
 
-      <View style={{width:wp(100), padding:10, marginTop:20,}}>
+      <View style={{width:wp(100), padding:20, marginTop:20,}}>
         <View style={{width:'100%'}}>
 <CustomText txt='Serviços' fontSize={22} font={FONTS.Bold} />
         </View>
