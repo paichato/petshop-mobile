@@ -38,6 +38,8 @@ import ListStore from './screens/listStore';
 import ListDog from './screens/listDog';
 import Home from './screens/home';
 import Search from './screens/search';
+import LoginAccount from './screens/loginAccount';
+import NewAccountVerification from './screens/newAccountVerification';
 // import ShopDogs from './screens/shopDogs';
 
 export {
@@ -96,7 +98,7 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-<Onboarding/>
+<NewAccountVerification/>
         {/* <Stack initialRouteName='Onboarding' > */}
           {/* <Stack.Screen name="Onboarding" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}

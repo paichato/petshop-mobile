@@ -1,14 +1,13 @@
-import { View, Text, SafeAreaView, useColorScheme, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from "react-native-responsive-screen";
-import Colors from '../../constants/Colors';
 import theme from '../../styles/theme';
 import { Octicons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 export default function Onboarding() {
 
