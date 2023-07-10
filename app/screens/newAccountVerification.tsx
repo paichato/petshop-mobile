@@ -16,6 +16,7 @@ export default function NewAccountVerification() {
 
     const {colors}=theme;
     const router = useRouter();
+    const [isSms,setSms]=useState(true);
 
 
 const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Whatsapp'}];
@@ -31,7 +32,7 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
     <View style={{flexDirection:'row'}}>
 
    
-      <CustomText txt='Introduz os 6 dígitos enviados ao teu número de celular por sms ' font={AVAILABLE_FONTS.Medium} fontSize={14} color={colors.text_detail} />
+      <CustomText txt={`Introduz os 6 dígitos enviados ao teu número de celular ${isSms ? 'por sms ' : 'pelo whatsapp'}`} font={AVAILABLE_FONTS.Medium} fontSize={14} color={colors.text_detail} />
 
 
     </View>
@@ -56,6 +57,7 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
 
     <View style={{marginTop:20}}>
     <SmoothPinCodeInput
+          autoFocus={true}
           restrictToNumbers
           codeLength={6}
           cellStyle={{
@@ -84,7 +86,7 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
 
     <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:1}}>
       <View style={{width:'40%', height:2, backgroundColor:colors.line}}></View>
-      <CustomText txt='SMS' color={colors.text_detail} font={AVAILABLE_FONTS.SemiBold} />
+      <CustomText txt={isSms ?'SMS' : 'Whatsapp'} color={colors.text_detail} font={AVAILABLE_FONTS.SemiBold} />
       <View style={{width:'40%', height:2, backgroundColor:colors.line}}></View>
     </View>
 

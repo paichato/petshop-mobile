@@ -40,6 +40,7 @@ import Home from './screens/home';
 import Search from './screens/search';
 import LoginAccount from './screens/loginAccount';
 import NewAccountVerification from './screens/newAccountVerification';
+import NewAccountSteps from './screens/newAccountSteps';
 // import ShopDogs from './screens/shopDogs';
 
 export {
@@ -98,7 +99,7 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-<NewAccountVerification/>
+<NewAccountSteps/>
         {/* <Stack initialRouteName='Onboarding' > */}
           {/* <Stack.Screen name="Onboarding" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
