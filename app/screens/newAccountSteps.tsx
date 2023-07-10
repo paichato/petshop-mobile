@@ -27,49 +27,35 @@ export default function NewAccountSteps() {
 
   const steps=[
     {
-      header:'O que pretendes',
-      description:'Eu como cliente quero',
+      header:'Só mais uns passos...',
+      description:'Eu como usuário quero',
       options:[
-       { id: 0, step: "1", value: "Comprar cães" },
-       { id: 1, step: "1", value: "Vender Cães" },
-       { id: 2, step: "1", value: "Vender produtos" },
-       { id: 3, step: "1", value: "Vender Serviços" },
+       { id: 0, step: "1", value: "Comprar" },
+       { id: 1, step: "1", value: "Vender" },
      ]
     },
     {
-      header:'Testando',
-      description:'hablando poquito',
+      header:'Vendedor',
+      description:'Eu quero',
       options:[
-        { id: 4, step: "1", value: "Comprar cães" },
-        { id: 5, step: "1", value: "Vender Cães" },
-        { id: 6, step: "1", value: "Vender produtos" },
-        { id: 7, step: "1", value: "Vender Serviços" },
+        { id: 4, step: "2", value: "Promover loja" },
+        { id: 5, step: "2", value: "Vender Cães" },
+        { id: 6, step: "2", value: "Vender produtos" },
+        { id: 7, step: "2", value: "Vender Serviços" },
       ]
-    } 
+    }, 
+    {
+      header:'O que pretendes',
+      description:'Eu como cliente quero',
+      options:[
+       { id: 8, step: "3", value: "Comprar cães" },
+       { id: 9, step: "3", value: "Vender Cães" },
+       { id: 10, step: "3", value: "Vender produtos" },
+       { id: 11, step: "3", value: "Vender Serviços" },
+     ]
+    },
 
   ]
-
-  const step1 ={
-    header:'O que pretendes',
-    description:'Eu como cliente quero',
-    options:[
-     { id: 0, step: "1", value: "Comprar cães" },
-     { id: 1, step: "1", value: "Vender Cães" },
-     { id: 2, step: "1", value: "Vender produtos" },
-     { id: 3, step: "1", value: "Vender Serviços" },
-   ]
-  }
-
-  const step2={
-    header:'Testando',
-    description:'hablando poquito',
-    options:[
-      { id: 0, step: "1", value: "Comprar cães" },
-      { id: 1, step: "1", value: "Vender Cães" },
-      { id: 2, step: "1", value: "Vender produtos" },
-      { id: 3, step: "1", value: "Vender Serviços" },
-    ]
-  } 
 
   const [code, setCode] = useState("");
 
@@ -78,22 +64,31 @@ export default function NewAccountSteps() {
     console.log(selected);
 
     // console.log(selected.includes(item));
-    if (selected.some(i=> i.id==item.id)) {
-      // console.log("SELECTED:", JSON.stringify(selected));
+    // if (selected.some(i=> i.id==item.id)) {
+    //   // console.log("SELECTED:", JSON.stringify(selected));
 
-      const newSelected = tmp.filter((i) => i.id !== item.id);
+    //   const newSelected = tmp.filter((i) => i.id !== item.id);
+    //   console.log('NEW SELECTED:',newSelected);
+
+    //    setSelected(newSelected);
+    //    return
+    // }
+
+    if(selected.some(i=>i.step == item.step)){
+      const newSelected = tmp.filter((i) => i.step !== item.step);
+      newSelected.push(item);
       console.log('NEW SELECTED:',newSelected);
-
        setSelected(newSelected);
        return
     }
+
     tmp.push(item);
     setSelected(tmp);
     
   };
 
   const handleNext=()=>{
-    if(step < 2){
+    if(step < steps.length){
       return setStep(step+1);
     }
 
@@ -106,6 +101,12 @@ export default function NewAccountSteps() {
       return setStep(step-1);
     }
   }
+
+  const hasSelected=(()=>{
+    console.log('has sele:',hasSelected);
+    
+   return !selected.some(i=>Number(i.step) == step)
+  })();
 
   const SelectorItem = ({ item }) => {
     return (
@@ -170,7 +171,7 @@ export default function NewAccountSteps() {
             <Octicons
               name="chevron-left"
               size={24}
-              color={colors.text_detail}
+              color={colors.text_dark}
             />
           </TouchableOpacity>
           <CustomText txt="Voltar" font="Poppins_700Bold" fontSize={24} />
@@ -179,6 +180,10 @@ export default function NewAccountSteps() {
       </View>
       <View style={{ width: "100%", marginTop: 20, flexDirection: "row" }}>
       <BarCounter/>
+      </View>
+      <View style={{alignSelf:'flex-start'}}>
+
+      <CustomText txt={'Selecione uma as opções abaixo, para concluir o teu perfil'} fontSize={14} color={colors.text_detail} />
       </View>
       <View style={{ width: "100%", marginTop: 20 }}>
         <CustomText
@@ -195,9 +200,9 @@ export default function NewAccountSteps() {
           />
         </View>
 
-        <View style={{ width: "100%", marginTop: 20 }}>
+        <View style={{ width: "100%", marginTop: 20, height:hp(30) }}>
           { steps[step-1].options.map((item) => (
-            <SelectorItem item={item} />
+            <SelectorItem item={item} key={item.id} />
           ))
           }
         </View>
@@ -206,7 +211,8 @@ export default function NewAccountSteps() {
       <View style={{ width: "100%" }}>
         <TouchableOpacity
         onPress={handleNext}
-          style={{
+        disabled={hasSelected}
+          style={[{
             borderRadius: 10,
             backgroundColor: colors.main_sec,
             padding: 20,
@@ -214,7 +220,7 @@ export default function NewAccountSteps() {
             marginTop: 20,
             borderColor: colors.line,
             borderWidth: 2,
-          }}
+          }, hasSelected && {backgroundColor:colors.line}]}
         >
           <CustomText
             txt="Próximo"
