@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router';
 import CustomText from '../../components/CustomText';
 import FONTS, { AVAILABLE_FONTS } from '../../constants/FONTS';
 
-export default function LoginAccount() {
+export default function NewAccountPhone() {
 
     const {colors}=theme;
     const router = useRouter();
@@ -26,10 +26,11 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
     
     <View style={{width:'100%', marginTop:20}}>
 
-    <CustomText txt='Iniciar Sessão' font={AVAILABLE_FONTS.Bold} fontSize={32}  />
-    <View style={{flexDirection:'row'}}>
+    <CustomText txt='Criar conta' font={AVAILABLE_FONTS.SemiBold} fontSize={32}  />
+    {/* <CustomText txt='Um código OTP de verificção será enviado para o seu número de celular' color={colors.text_detail} fontSize={16} font={AVAILABLE_FONTS.Regular} /> */}
+    <View style={{flexDirection:'row', marginTop:10}}>
 
-      {options.map((item,i)=><TouchableOpacity onPress={()=>setSelectedOption(item)} style={{borderRadius:10, backgroundColor:selectedOption.id===i ? colors.line : colors.bg_primary, padding:10,}}>
+      {options.map((item,i)=><TouchableOpacity onPress={()=>setSelectedOption(item)} style={{borderRadius:10, backgroundColor:selectedOption.id===i ? colors.main_sec_10 : colors.bg_primary, padding:10,}}>
     <CustomText txt={item.value} font={AVAILABLE_FONTS.Medium} fontSize={14} color={selectedOption.id===i ? colors.text_dark : colors.text_detail}  />
     </TouchableOpacity>)
     }
@@ -46,18 +47,12 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
 
     <TextInput placeholder='821010100' style={{padding:10, fontSize:14, fontFamily:AVAILABLE_FONTS.Bold, alignSelf:'center',  height:'100%', width:'100%', color:colors.text_dark}} /> 
     </View>
-    <View style={{backgroundColor:colors.line, width:'100%', borderRadius:10, flexDirection:'row', alignItems:'center', paddingLeft:10,marginTop:10}}>
 
-    <TextInput placeholder='palavra passe' style={{padding:10, fontSize:14, fontFamily:AVAILABLE_FONTS.Bold, alignSelf:'center',  height:'100%', width:'90%', color:colors.text_dark}} /> 
-    <TouchableOpacity>
-      <Octicons name='eye' size={14} />
-    </TouchableOpacity>
-    </View>
     </View>
 
     <TouchableOpacity style={{borderRadius:10, backgroundColor:colors.main_sec, padding:10, alignItems:'center', marginTop:20}}>
 
-    <CustomText txt='Entrar' font={AVAILABLE_FONTS.Regular} fontSize={14} color={colors.white}  />
+    <CustomText txt='Avançar' font={AVAILABLE_FONTS.SemiBold} fontSize={14} color={colors.white}  />
     </TouchableOpacity>
 
 
@@ -76,7 +71,7 @@ const options=[{id:0, key:'sms', value:'SMS'}, {id:1, key:'whatsapp', value:'Wha
 </TouchableOpacity>
     <TouchableOpacity style={{borderRadius:10, backgroundColor:colors.text_dark, padding:10, alignItems:'center', marginTop:20}}>
 
-<CustomText txt='Criar conta' font={AVAILABLE_FONTS.Regular} fontSize={14} color={colors.white}  />
+<CustomText txt='Iniciar sessão' font={AVAILABLE_FONTS.Regular} fontSize={14} color={colors.white}  />
 </TouchableOpacity>
     </View>
   
