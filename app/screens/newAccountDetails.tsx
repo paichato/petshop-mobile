@@ -21,6 +21,8 @@ import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 export default function NewAccountDetails() {
   const { colors } = theme;
   const router = useRouter();
+  const [location, setLocation]=useState(false);
+  const [visiblePass,setVisiblePass]=useState(false);
 
   const options = [
     { id: 0, key: "sms", value: "SMS" },
@@ -28,6 +30,13 @@ export default function NewAccountDetails() {
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  const handleVisiblePas=()=>{
+    setVisiblePass(!visiblePass);
+  }
+  const handleLocation=(value:boolean)=>{
+    setLocation(value);
+  }
 
   return (
     <SafeAreaView
@@ -102,19 +111,21 @@ export default function NewAccountDetails() {
               }}
             >
               <TextInput
+              secureTextEntry={visiblePass}
                 placeholder="palavra passe"
                 style={{
                   padding: 10,
                   fontSize: 14,
-                  fontFamily: AVAILABLE_FONTS.Bold,
+                  fontFamily: AVAILABLE_FONTS.Medium,
                   alignSelf: "center",
                   height: "100%",
                   width: "90%",
                   color: colors.text_dark,
                 }}
               />
-              <TouchableOpacity>
-                <Octicons name="eye" size={14} />
+              <TouchableOpacity onPress={handleVisiblePas}>
+                {visiblePass ? <Octicons name="eye-closed" size={14} color={colors.text_detail} /> :
+                <Octicons name="eye" size={14} color={colors.text_detail} />}
               </TouchableOpacity>
             </View>
           </View>
@@ -139,19 +150,21 @@ export default function NewAccountDetails() {
               }}
             >
               <TextInput
+              secureTextEntry={visiblePass}
                 placeholder="palavra passe"
                 style={{
                   padding: 10,
                   fontSize: 14,
-                  fontFamily: AVAILABLE_FONTS.Bold,
+                  fontFamily: AVAILABLE_FONTS.Medium,
                   alignSelf: "center",
                   height: "100%",
                   width: "90%",
                   color: colors.text_dark,
                 }}
               />
-              <TouchableOpacity>
-                <Octicons name="eye" size={14} />
+              <TouchableOpacity onPress={handleVisiblePas}>
+                {visiblePass ? <Octicons name="eye-closed" size={14} color={colors.text_detail} /> :
+                <Octicons name="eye" size={14} color={colors.text_detail} />}
               </TouchableOpacity>
             </View>
           </View>
@@ -166,13 +179,14 @@ export default function NewAccountDetails() {
             }}
           >
             <TouchableOpacity
-              style={{
+            onPress={()=>handleLocation(false)}
+              style={[{
                 width: "45%",
                 padding: 10,
                 borderRadius: 10,
                 borderColor: colors.line,
                 borderWidth: 2,
-              }}
+              },!location && {borderColor:colors.main_sec}]}
             >
               <CustomText
                 txt="Maputo"
@@ -182,13 +196,15 @@ export default function NewAccountDetails() {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
+            onPress={()=>handleLocation(true)}
+              style={[{
                 width: "45%",
                 padding: 10,
                 borderRadius: 10,
                 borderColor: colors.line,
                 borderWidth: 2,
-              }}
+                
+              },location && {borderColor:colors.main_sec}]}
             >
               <CustomText
                 txt="Matola"
@@ -211,7 +227,7 @@ export default function NewAccountDetails() {
           }}
         >
           <CustomText
-            txt="Entrar"
+            txt="Avançar"
             font={AVAILABLE_FONTS.Regular}
             fontSize={14}
             color={colors.white}
@@ -220,7 +236,7 @@ export default function NewAccountDetails() {
       </View>
      
    
-      <TouchableOpacity
+      <View
         style={{
           borderRadius: 10,
           backgroundColor: colors.main_sec,
@@ -259,7 +275,7 @@ export default function NewAccountDetails() {
             color={colors.white}
           />
         </TouchableOpacity>
-      </TouchableOpacity>
+      </View>
       
     </SafeAreaView>
   );
