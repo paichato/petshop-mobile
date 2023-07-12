@@ -14,7 +14,7 @@ import {
 import theme from "../../styles/theme";
 import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 
@@ -39,6 +39,8 @@ export default function NewAccountDetails() {
   }
 
   return (
+    <>
+    <Stack.Screen />
     <SafeAreaView
       style={{
         flex: 1,
@@ -218,6 +220,7 @@ export default function NewAccountDetails() {
         
 
         <TouchableOpacity
+        onPress={()=>router.push('screens/newAccountSteps')}
           style={{
             borderRadius: 10,
             backgroundColor: colors.text_dark,
@@ -262,6 +265,7 @@ export default function NewAccountDetails() {
           color={colors.white}
         />
         <TouchableOpacity
+        onPress={()=>router.push('screens/loginAccount')}
           style={{
             backgroundColor: colors.text_dark,
             padding: 10,
@@ -278,5 +282,6 @@ export default function NewAccountDetails() {
       </View>
       
     </SafeAreaView>
+    </>
   );
 }

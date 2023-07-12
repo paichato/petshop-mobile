@@ -4,7 +4,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from "react-native-responsive-screen";
-import theme from '../../styles/theme';
+import theme from '../styles/theme';
 import { Octicons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import { useRouter } from 'expo-router';
@@ -26,7 +26,7 @@ export default function Onboarding() {
         //   width: 60,
           height: hp(50),
         }}
-        source={require('../../assets/lotties/122299-dog-pet-.json')}
+        source={require('../assets/lotties/122299-dog-pet-.json')}
       />
 
     <View>
@@ -35,7 +35,7 @@ export default function Onboarding() {
 
     </View>
 
-    <TouchableOpacity onPress={()=>router.push('/shop')} style={{flexDirection:'row', alignItems:'center', backgroundColor:colors.main, padding:10, borderRadius:10, marginTop:10, width:wp(40), justifyContent:'space-around', alignSelf:'flex-end'}}>
+    <TouchableOpacity onPress={()=>router.push('screens/loginAccount')} style={{flexDirection:'row', alignItems:'center', backgroundColor:colors.main, padding:10, borderRadius:10, marginTop:10, width:wp(40), justifyContent:'space-around', alignSelf:'flex-end'}}>
     <Text style={{fontSize:18, fontWeight:'600', color:colors.white}}>Entrar</Text>
     <Octicons name="chevron-right" size={24} color={colors.white} />
     </TouchableOpacity>

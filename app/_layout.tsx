@@ -21,10 +21,10 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
-import { SplashScreen, Stack, Navigator,  } from 'expo-router';
+import { SplashScreen, Stack, Navigator, Slot,   } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
-import Onboarding from './screens';
+import Onboarding from '.';
 import Shop from './screens/shop';
 import GoPro from './screens/GoPro';
 import Login from './screens/login';
@@ -101,11 +101,13 @@ function RootLayoutNav() {
   return (
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-<NewAccountDetails/>
-        {/* <Stack initialRouteName='Onboarding' > */}
-          {/* <Stack.Screen name="Onboarding" options={{ headerShown: false }} /> */}
+        {/* <LoginAccount/> */}
+{/* <Home/> */}
+        <Stack initialRouteName='Onboarding' screenOptions={{headerShown:false}} >
+          {/* <Stack.Screen name="/loginAccount" options={{ headerShown: false }}  />
+          <Stack.Screen name="/newAccountPhone" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-        {/* </Stack> */}
+        </Stack>
       </ThemeProvider>
     </>
   );

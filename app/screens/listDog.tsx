@@ -497,6 +497,7 @@ export default function ListDog({ navigation }) {
             <View style={{ marginTop: 20 }}>
               <TitleHeader letfTitle={"Mais do tipo(48)"} />
               <TouchableOpacity
+              onPress={()=>router.push('screens/listDog')}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -513,6 +514,7 @@ export default function ListDog({ navigation }) {
               </TouchableOpacity>
               <Divider />
               <TouchableOpacity
+              onPress={()=>router.push('screens/listDog')}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -529,6 +531,7 @@ export default function ListDog({ navigation }) {
               </TouchableOpacity>
               <Divider />
               <TouchableOpacity
+              onPress={()=>router.push('screens/listDog')}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
