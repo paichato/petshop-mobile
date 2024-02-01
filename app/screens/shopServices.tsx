@@ -16,6 +16,7 @@ import theme from "../../styles/theme";
 import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Link, useRouter } from "expo-router";
+import MainContainer from "../../components/MainContainer";
 
 interface IProduct {
   description: string;
@@ -66,38 +67,43 @@ export default function ShopServices() {
               📍Maputo
             </Text>
           </View>
-          <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'50%'}}>
-
-          <TouchableOpacity>
-            <Text
-              style={{
-                color: colors.white,
-                fontSize: 12,
-                fontWeight: "800",
-                backgroundColor: colors.text_dark,
-                borderRadius: 5,
-                padding: 5,
-              }}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "50%",
+            }}
+          >
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: colors.white,
+                  fontSize: 12,
+                  fontWeight: "800",
+                  backgroundColor: colors.text_dark,
+                  borderRadius: 5,
+                  padding: 5,
+                }}
               >
-              verificado ✨
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={{
-                color: colors.white,
-                fontSize: 12,
-                fontWeight: "800",
-                backgroundColor: colors.sucess,
-                borderRadius: 5,
-                padding: 5,
-              }}
+                verificado ✨
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: colors.white,
+                  fontSize: 12,
+                  fontWeight: "800",
+                  backgroundColor: colors.sucess,
+                  borderRadius: 5,
+                  padding: 5,
+                }}
               >
-              popular
-            </Text>
-          </TouchableOpacity>
-              </View>
-
+                popular
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     };
@@ -226,19 +232,25 @@ export default function ShopServices() {
               </TouchableOpacity>
             </View>
 
-            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:5, marginBottom:5, width:'60%'}}>
-
-<Octicons name="star-fill" size={14} color={colors.main_sec} />
-<Octicons name="star-fill" size={14} color={colors.main_sec} />
-<Octicons name="star-fill" size={14} color={colors.main_sec} />
-<Octicons name="star-fill" size={14} color={colors.main_sec} />
-<Octicons name="star" size={14} color={colors.main_sec} />
-  </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 5,
+                marginBottom: 5,
+                width: "60%",
+              }}
+            >
+              <Octicons name="star-fill" size={14} color={colors.main_sec} />
+              <Octicons name="star-fill" size={14} color={colors.main_sec} />
+              <Octicons name="star-fill" size={14} color={colors.main_sec} />
+              <Octicons name="star-fill" size={14} color={colors.main_sec} />
+              <Octicons name="star" size={14} color={colors.main_sec} />
+            </View>
             <Text style={{ color: colors.text }}>
               Keep your dog teeth healthy and cleanwith the Nerf dogs...
             </Text>
-
-        
           </View>
         </View>
         <CardFooter />
@@ -247,15 +259,7 @@ export default function ShopServices() {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: colors.bg_primary,
-        padding: 20,
-      }}
-    >
+    <MainContainer>
       <Text>Shop</Text>
       <View
         style={{
@@ -270,7 +274,7 @@ export default function ShopServices() {
         <Octicons name="credit-card" size={24} color={colors.header} />
       </View>
 
-      <View style={{alignItems:'center'}}>
+      <View style={{ alignItems: "center" }}>
         <Text style={{ fontSize: 22, fontWeight: "800" }}>Serviços</Text>
         <Text style={{ fontSize: 22, color: colors.main_sec }}>{`(200)`}</Text>
       </View>
@@ -284,14 +288,14 @@ export default function ShopServices() {
           justifyContent: "space-between",
         }}
       >
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
-        <ShopItem  />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
+        <ShopItem />
       </ScrollView>
       <View
         style={{
@@ -305,6 +309,6 @@ export default function ShopServices() {
       >
         <Octicons name="filter" size={24} color={colors.white} />
       </View>
-    </SafeAreaView>
+    </MainContainer>
   );
 }

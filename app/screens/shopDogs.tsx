@@ -16,6 +16,7 @@ import theme from "../../styles/theme";
 import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Link, useRouter } from "expo-router";
+import MainContainer from "../../components/MainContainer";
 
 interface IProduct {
   description: string;
@@ -135,7 +136,7 @@ export default function ShopDogs() {
 
     return (
       <TouchableOpacity
-      onPress={()=>router.push('screens/listDog')}
+        onPress={() => router.push("screens/listDog")}
         style={{
           width: wp(90),
           marginTop: 40,
@@ -287,15 +288,7 @@ export default function ShopDogs() {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: colors.bg_primary,
-        padding: 20,
-      }}
-    >
+    <MainContainer>
       <Text>Shop</Text>
       <View
         style={{
@@ -345,6 +338,6 @@ export default function ShopDogs() {
       >
         <Octicons name="filter" size={24} color={colors.white} />
       </View>
-    </SafeAreaView>
+    </MainContainer>
   );
 }

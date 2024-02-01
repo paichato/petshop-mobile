@@ -16,6 +16,7 @@ import LottieView from "lottie-react-native";
 import { useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
+import MainContainer from "../../components/MainContainer";
 
 export default function LoginAccount() {
   const { colors } = theme;
@@ -29,15 +30,7 @@ export default function LoginAccount() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        backgroundColor: colors.bg_primary,
-        padding: 20,
-      }}
-    >
+    <MainContainer>
       <View style={{ width: "100%", marginTop: 20 }}>
         <CustomText
           txt="Iniciar Sessão"
@@ -143,7 +136,7 @@ export default function LoginAccount() {
         </View>
 
         <TouchableOpacity
-        onPress={()=>router.push('screens/home')}
+          onPress={() => router.push("screens/home")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.main_sec,
@@ -203,7 +196,7 @@ export default function LoginAccount() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={()=>router.push('screens/newAccountPhone')}
+          onPress={() => router.push("screens/newAccountPhone")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.text_dark,
@@ -220,6 +213,6 @@ export default function LoginAccount() {
           />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </MainContainer>
   );
 }

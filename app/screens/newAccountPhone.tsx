@@ -16,6 +16,7 @@ import LottieView from "lottie-react-native";
 import { useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
+import MainContainer from "../../components/MainContainer";
 
 export default function NewAccountPhone() {
   const { colors } = theme;
@@ -29,15 +30,7 @@ export default function NewAccountPhone() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        backgroundColor: colors.bg_primary,
-        padding: 20,
-      }}
-    >
+    <MainContainer>
       <View style={{ width: "100%", marginTop: 20 }}>
         <CustomText
           txt="Criar conta"
@@ -119,7 +112,7 @@ export default function NewAccountPhone() {
         </View>
 
         <TouchableOpacity
-        onPress={()=>router.push('screens/newAccountDetails')}
+          onPress={() => router.push("screens/newAccountDetails")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.main_sec,
@@ -179,7 +172,7 @@ export default function NewAccountPhone() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={()=>router.push('screens/loginAccount')}
+          onPress={() => router.push("screens/loginAccount")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.text_dark,
@@ -196,6 +189,6 @@ export default function NewAccountPhone() {
           />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </MainContainer>
   );
 }
