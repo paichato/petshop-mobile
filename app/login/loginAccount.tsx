@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import {
@@ -17,10 +18,12 @@ import { useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 import MainContainer from "../../components/MainContainer";
+import { useSession } from "../../context/auth";
 
 export default function LoginAccount() {
   const { colors } = theme;
   const router = useRouter();
+  const { signIn, session, isLoading } = useSession();
 
   const options = [
     { id: 0, key: "sms", value: "SMS" },
@@ -28,6 +31,13 @@ export default function LoginAccount() {
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [phonenumber, setPhonenumber] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    signIn({ phonenumber: "863312292", password: "123456" });
+    router.replace("(app)/home");
+  };
 
   return (
     <MainContainer>
@@ -37,14 +47,17 @@ export default function LoginAccount() {
           font={AVAILABLE_FONTS.Bold}
           fontSize={32}
         />
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", marginTop: 20 }}>
           {options.map((item, i) => (
             <TouchableOpacity
+              key={item.value}
               onPress={() => setSelectedOption(item)}
               style={{
                 borderRadius: 10,
                 backgroundColor:
-                  selectedOption.id === i ? colors.line : colors.bg_primary,
+                  selectedOption.id === i
+                    ? colors.main_sec_10
+                    : colors.bg_primary,
                 padding: 10,
               }}
             >
@@ -95,6 +108,11 @@ export default function LoginAccount() {
 
             <TextInput
               placeholder="821010100"
+              value={phonenumber}
+              onChangeText={setPhonenumber}
+              dataDetectorTypes={"phoneNumber"}
+              keyboardType="phone-pad"
+              maxLength={9}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -119,6 +137,9 @@ export default function LoginAccount() {
           >
             <TextInput
               placeholder="palavra passe"
+              value={password}
+              onChangeText={setPassword}
+              placeholderTextColor={colors.text_detail}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -136,21 +157,30 @@ export default function LoginAccount() {
         </View>
 
         <TouchableOpacity
-          onPress={() => router.push("screens/home")}
+          // onPress={() => router.push("login/home")}
+          onPress={() => handleLogin()}
           style={{
             borderRadius: 10,
-            backgroundColor: colors.main_sec,
+            backgroundColor: isLoading ? colors.text_detail : colors.main_sec,
             padding: 10,
             alignItems: "center",
             marginTop: 20,
+            flexDirection: "row",
+            justifyContent: "center",
           }}
+          disabled={isLoading}
         >
           <CustomText
             txt="Entrar"
             font={AVAILABLE_FONTS.Regular}
             fontSize={14}
-            color={colors.white}
+            color={isLoading ? colors.text : colors.white}
           />
+          {isLoading && (
+            <View style={{ marginLeft: 10 }}>
+              <ActivityIndicator color={colors.text} size={"small"} />
+            </View>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -178,6 +208,7 @@ export default function LoginAccount() {
 
       <View style={{ width: "100%" }}>
         <TouchableOpacity
+          disabled={isLoading}
           style={{
             borderRadius: 10,
             backgroundColor: colors.bg_primary,
@@ -196,7 +227,8 @@ export default function LoginAccount() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.push("screens/newAccountPhone")}
+          disabled={isLoading}
+          onPress={() => router.push("login/newAccountPhone")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.text_dark,

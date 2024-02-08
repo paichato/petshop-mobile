@@ -3,3 +3,16 @@
 ☐ Add modals
 ☐ test app
 ☐ Add login and create account backend
+
+☐ Reconsider expo routes
+☐ Add login auth
+☐ Validate login fields
+☐ Add forgot password screen
+☐ Integrate create account(add locations) -> based on web
+
+☐ Add a new step on account creation to add photo to profile
+
+☐ Add a visible Create anuncio button on homescreen
+
+☐ Add Schema Anuncio/Add that can COntain Dog or Product
+s

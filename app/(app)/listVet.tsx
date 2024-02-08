@@ -23,7 +23,7 @@ import MapViewDirections from "react-native-maps-directions";
 import { mapStyle } from "../../constants/mapStyle";
 import FONTS from "../../constants/FONTS";
 import ReviewBlock from "../../components/Review/reviewBlock";
-import ImageView from "react-native-image-viewing"
+import ImageView from "react-native-image-viewing";
 
 interface IProduct {
   description: string;
@@ -42,7 +42,7 @@ export default function ListVet({ navigation }) {
   const [selectedImage, setSelectedImage] = useState(
     require("../../assets/images/services.jpg")
   );
-   const [visibleImage, setIsVisibleImage] = useState(false);
+  const [visibleImage, setIsVisibleImage] = useState(false);
 
   const handleImageSelection = (img) => {
     setSelectedImage(img);
@@ -144,12 +144,20 @@ export default function ListVet({ navigation }) {
         }}
       >
         <Text
-          style={{ color: colors.text_dark, fontSize: 18, fontFamily:FONTS.Bold }}
+          style={{
+            color: colors.text_dark,
+            fontSize: 18,
+            fontFamily: FONTS.Bold,
+          }}
         >
           {letfTitle}
         </Text>
         <Text
-          style={{ color: colors.text_dark, fontSize: 18,  fontFamily:FONTS.Bold }}
+          style={{
+            color: colors.text_dark,
+            fontSize: 18,
+            fontFamily: FONTS.Bold,
+          }}
         >
           {rightTitle}
         </Text>
@@ -227,21 +235,27 @@ export default function ListVet({ navigation }) {
                 style={{
                   color: colors.text_dark,
                   fontSize: 18,
-                  fontFamily:FONTS.Bold
+                  fontFamily: FONTS.Bold,
                 }}
               >
                 Dr Kelvin McClein
               </Text>
-              <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
+              <Text
+                style={{
+                  color: colors.text_detail,
+                  fontWeight: "600",
+                  fontFamily: "SpaceMono",
+                }}
+              >
                 Veterinario
               </Text>
             </View>
             <Text
               style={{
                 fontSize: 15,
-                
+
                 color: colors.main_sec,
-                fontFamily:FONTS.Bold
+                fontFamily: FONTS.Bold,
               }}
             >
               150.00MZN
@@ -255,7 +269,13 @@ export default function ListVet({ navigation }) {
               justifyContent: "space-between",
             }}
           >
-            <Text style={{ color: colors.text_detail, fontWeight: "600", fontFamily:'SpaceMono' }}>
+            <Text
+              style={{
+                color: colors.text_detail,
+                fontWeight: "600",
+                fontFamily: "SpaceMono",
+              }}
+            >
               Experiencia: 10 anos
             </Text>
             <TouchableOpacity
@@ -346,14 +366,14 @@ export default function ListVet({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          <View style={{ marginTop: 20, width:'90%' }}>
+          <View style={{ marginTop: 20, width: "90%" }}>
             <TitleHeader
               letfTitle={"Acerca do Veterinario"}
               rightTitle="⭐4.8"
             />
 
             <View>
-              <Text style={{ color: colors.text, fontFamily:FONTS.Regular }}>
+              <Text style={{ color: colors.text, fontFamily: FONTS.Regular }}>
                 Texto bem grande para exemplificar o a descricao do vereruabai
                 deisbdasbsda. Texto bem grande para exemplificar o a descricao
                 do vereruabai deisbdasbsda
@@ -375,7 +395,7 @@ export default function ListVet({ navigation }) {
                     color: colors.text_dark,
                     fontSize: 14,
                     fontWeight: "400",
-                    fontFamily:FONTS.Regular
+                    fontFamily: FONTS.Regular,
                   }}
                 >
                   Consulta
@@ -404,7 +424,7 @@ export default function ListVet({ navigation }) {
                     color: colors.text_dark,
                     fontSize: 14,
                     fontWeight: "400",
-                    fontFamily:FONTS.Regular
+                    fontFamily: FONTS.Regular,
                   }}
                 >
                   Desparasitar
@@ -433,7 +453,7 @@ export default function ListVet({ navigation }) {
                     color: colors.text_dark,
                     fontSize: 14,
                     fontWeight: "400",
-                    fontFamily:FONTS.Regular
+                    fontFamily: FONTS.Regular,
                   }}
                 >
                   Vacinacao
@@ -451,7 +471,7 @@ export default function ListVet({ navigation }) {
               <Divider />
             </View>
           </View>
-<ReviewBlock />
+          <ReviewBlock />
           <View style={{ marginTop: 20 }}>
             <TitleHeader letfTitle={"Localização"} rightTitle="Maputo" />
           </View>
@@ -518,17 +538,14 @@ export default function ListVet({ navigation }) {
               ></View>
             </Marker>
           </MapView>
-
-          
         </View>
 
         <ImageView
-  images={[selectedImage]}
-  imageIndex={0}
-  visible={visibleImage}
-  onRequestClose={() => setIsVisibleImage(false)}
-/>
-
+          images={[selectedImage]}
+          imageIndex={0}
+          visible={visibleImage}
+          onRequestClose={() => setIsVisibleImage(false)}
+        />
       </ScrollView>
       <TouchableOpacity
         style={{
@@ -546,11 +563,11 @@ export default function ListVet({ navigation }) {
         }}
       >
         <View style={{ width: "80%", flexDirection: "row" }}>
-        <Ionicons name="cafe-outline" size={24} color={colors.white} />
+          <Ionicons name="cafe-outline" size={24} color={colors.white} />
           <Text
             style={{
               color: colors.white,
-              fontFamily:FONTS.SemiBold,
+              fontFamily: FONTS.SemiBold,
               fontSize: 18,
               marginLeft: 10,
             }}
@@ -569,7 +586,7 @@ export default function ListVet({ navigation }) {
           |
         </Text>
         <TouchableOpacity style={{ width: "10%" }}>
-        <Ionicons name="logo-whatsapp" size={24} color={colors.white} />
+          <Ionicons name="logo-whatsapp" size={24} color={colors.white} />
         </TouchableOpacity>
       </TouchableOpacity>
     </>

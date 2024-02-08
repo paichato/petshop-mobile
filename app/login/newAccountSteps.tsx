@@ -90,7 +90,7 @@ export default function NewAccountSteps() {
     if (step < steps.length) {
       return setStep(step + 1);
     }
-    router.push("screens/home");
+    router.push("(app)/home");
     console.log(step);
   };
 

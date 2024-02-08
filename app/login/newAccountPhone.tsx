@@ -112,7 +112,7 @@ export default function NewAccountPhone() {
         </View>
 
         <TouchableOpacity
-          onPress={() => router.push("screens/newAccountDetails")}
+          onPress={() => router.push("login/newAccountDetails")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.main_sec,
@@ -172,7 +172,7 @@ export default function NewAccountPhone() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.push("screens/loginAccount")}
+          onPress={() => router.push("login/loginAccount")}
           style={{
             borderRadius: 10,
             backgroundColor: colors.text_dark,

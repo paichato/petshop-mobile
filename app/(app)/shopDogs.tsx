@@ -136,7 +136,7 @@ export default function ShopDogs() {
 
     return (
       <TouchableOpacity
-        onPress={() => router.push("screens/listDog")}
+        onPress={() => router.push("(app)/listDog")}
         style={{
           width: wp(90),
           marginTop: 40,

@@ -4,14 +4,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import theme from "../styles/theme";
+import theme from "../../styles/theme";
 import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Redirect, useRouter } from "expo-router";
-import MainContainer from "../components/MainContainer";
-import { useSession } from "../context/auth";
+import MainContainer from "../../components/MainContainer";
+import { useSession } from "../../context/auth";
 
-export default function Validator() {
+export default function Onboarding() {
   const { colors } = theme;
   const router = useRouter();
   const { session } = useSession();
@@ -19,10 +19,6 @@ export default function Validator() {
   if (!session) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
-    return <Redirect href="login/onboarding" />;
-  }
-
-  if (session) {
     return <Redirect href="(app)/home" />;
   }
 
@@ -54,7 +50,7 @@ export default function Validator() {
           //   width: 60,
           height: hp(50),
         }}
-        source={require("../assets/lotties/122299-dog-pet-.json")}
+        source={require("../../assets/lotties/122299-dog-pet-.json")}
       />
 
       <View>

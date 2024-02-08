@@ -107,7 +107,7 @@ export default function Home() {
             justifyContent: "space-around",
           }}
         >
-          <TouchableOpacity onPress={() => router.push("screens/search")}>
+          <TouchableOpacity onPress={() => router.push("(app)/search")}>
             <Octicons name="search" size={24} color={colors.text_dark} />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -209,7 +209,7 @@ export default function Home() {
         >
           <View style={{ width: "47%" }}>
             <TouchableOpacity
-              onPress={() => router.push("screens/shopDogs")}
+              onPress={() => router.push("(app)/shopDogs")}
               style={{
                 backgroundColor: colors.main_sec,
                 width: "100%",
@@ -251,7 +251,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => router.push("screens/shopServices")}
+              onPress={() => router.push("(app)/shopServices")}
               style={{
                 backgroundColor: colors.main_sec,
                 width: "100%",
@@ -300,7 +300,7 @@ export default function Home() {
           </View>
           <View style={{ width: "47%" }}>
             <TouchableOpacity
-              onPress={() => router.push("screens/shop")}
+              onPress={() => router.push("(app)/shop")}
               style={{
                 backgroundColor: colors.main_sec,
                 width: "100%",
@@ -346,7 +346,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => router.push("screens/shopVets")}
+              onPress={() => router.push("(app)/shopVets")}
               style={{
                 backgroundColor: colors.main_sec,
                 width: "100%",
@@ -388,7 +388,7 @@ export default function Home() {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => router.push("screens/shopStores")}
+          onPress={() => router.push("(app)/shopStores")}
           style={{
             width: "100%",
             height: hp(25),
