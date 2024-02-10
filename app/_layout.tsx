@@ -109,10 +109,7 @@ function LayoutNav() {
         >
           {/* <LoginAccount/> */}
           {/* <Home/> */}
-          <Stack
-            initialRouteName="Onboarding"
-            screenOptions={{ headerShown: false }}
-          />
+          <Stack screenOptions={{ headerShown: false }} />
           {/* <Stack.Screen name="/loginAccount" options={{ headerShown: false }}  />
           <Stack.Screen name="/newAccountPhone" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}

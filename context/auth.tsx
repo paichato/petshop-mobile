@@ -66,8 +66,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     setData({ token: "", user: null });
+    console.warn("Deleted Data");
     delete api.defaults.headers.authorization;
+    console.warn("Deleted headers");
     setSession(null);
+    console.warn("Deleted session");
   };
 
   return (

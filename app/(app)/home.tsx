@@ -23,6 +23,7 @@ import { MainFullRoundedBUtton } from "../../components/Buttons/MainFullRoundedB
 import CustomText from "../../components/CustomText";
 import Carousel from "react-native-snap-carousel";
 import FONTS from "../../constants/FONTS";
+import { useSession } from "../../context/auth";
 
 interface IProduct {
   description: string;
@@ -43,6 +44,13 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [errorLocal, setErrorLocal] = useState("");
   let swipeRef = null;
+
+  const { signIn, session, isLoading, signOut } = useSession();
+
+  const handleLogout = () => {
+    signOut();
+    router.replace("login/onboarding");
+  };
 
   const DescItem = ({ name = "ruby", type = "product" }) => {
     return (
@@ -110,7 +118,7 @@ export default function Home() {
           <TouchableOpacity onPress={() => router.push("(app)/search")}>
             <Octicons name="search" size={24} color={colors.text_dark} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLogout()}>
             <Octicons name="heart" size={24} color={colors.text_dark} />
           </TouchableOpacity>
         </View>
