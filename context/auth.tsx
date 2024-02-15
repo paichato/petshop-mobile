@@ -27,6 +27,7 @@ interface AuthContextData {
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;
+  processing: boolean;
 }
 
 interface AuthProviderProps {
@@ -48,20 +49,58 @@ export function useSession() {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
+  const [processing, setProcessing] = useState(false);
   const [[isLoading, session], setSession] = useStorageState("session");
 
   const signIn = async ({ phonenumber, password }: SignInCredentials) => {
-    // const response = await api.post("/login", {
-    //   phonenumber: "+258" + phonenumber,
-    //   password,
-    // });
+    setProcessing(true);
 
-    // console.log(JSON.stringify(response.data));
-    // const { user } = response.data;
-    // const { token } = response.data.user;
-    // setData({ token, user });
-    // api.defaults.headers.authorization = `Bearer ${token}`;
-    setSession("xxx");
+    try {
+      const response = await api.post("/login", {
+        phonenumber: "+258" + phonenumber,
+        password,
+      });
+
+      // if (response.data.user) {
+      console.log(JSON.stringify(response.data));
+      const { user } = response.data;
+      const { token } = response.data.user;
+      setData({ token, user });
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      setSession("xxx");
+      setProcessing(false);
+      return true;
+      // }
+      // console.log(JSON.stringify(err));
+      // setData({});
+      // setProcessing(false);
+      // return false;
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      setData({});
+      setProcessing(false);
+      return false;
+    }
+    // await api
+    //   .post("/login", {
+    //     phonenumber: "+258" + phonenumber,
+    //     password,
+    //   })
+    //   .then((res) => {
+    //     console.log(JSON.stringify(res.data));
+    //     const { user } = res.data;
+    //     const { token } = res.data.user;
+    //     setData({ token, user });
+    //     api.defaults.headers.authorization = `Bearer ${token}`;
+    //     setSession("xxx");
+    //     return true;
+    //   })
+    //   .catch((err) => {
+    //     console.log(JSON.stringify(err));
+    //     setData({});
+    //     setProcessing(false);
+    //     return false;
+    //   });
   };
 
   const signOut = async () => {
@@ -75,7 +114,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: data.user, signIn, signOut, session, isLoading }}
+      value={{
+        user: data.user,
+        signIn,
+        signOut,
+        session,
+        isLoading,
+        processing,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -58,7 +58,7 @@ export default function Onboarding() {
       </View>
 
       <TouchableOpacity
-        onPress={() => router.push("login/loginAccount")}
+        onPress={() => router.replace("login/loginAccount")}
         // onPress={handleLogin}
         style={{
           flexDirection: "row",

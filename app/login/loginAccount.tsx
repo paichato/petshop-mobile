@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,11 +20,16 @@ import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 import MainContainer from "../../components/MainContainer";
 import { useSession } from "../../context/auth";
+import { loginSchema } from "../../utils/schemas";
+import { Modalize } from "react-native-modalize";
+import { AntDesign } from "@expo/vector-icons";
+import ErrorModal from "../../components/ErrorModal";
+import ErrorMessage from "../../components/ErrorMessage";
 
 export default function LoginAccount() {
   const { colors } = theme;
   const router = useRouter();
-  const { signIn, session, isLoading } = useSession();
+  const { signIn, session, processing } = useSession();
 
   const options = [
     { id: 0, key: "sms", value: "SMS" },
@@ -33,9 +39,57 @@ export default function LoginAccount() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const [phonenumber, setPhonenumber] = useState("");
   const [password, setPassword] = useState("");
+  const [errorFields, setErrorFields] = useState(["", ""]);
+  const [isPassVisible, setIssPassVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const modalizeRef = useRef<Modalize>(null);
 
-  const handleLogin = () => {
-    signIn({ phonenumber: "863312292", password: "123456" });
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
+
+  // const validateFIelds = () => {
+  //   const result = loginSchema.validate({ phonenumber, password });
+
+  //   console.log(result);
+  // };
+
+  const handleLogin = async () => {
+    let phoneVal = Boolean(
+      phonenumber.length < 9 ||
+        Number(phonenumber) < 820000000 ||
+        Number(phonenumber) > 879999999
+    );
+    const passVal = Boolean(password.length < 5);
+    const DEFAUL_ERROR_MESSAGE = {
+      phonenumber: "Numero invalido",
+      password: "Senha invalida. Min 6 caracteres",
+    };
+    if (phoneVal || passVal) {
+      let tmp = [];
+      if (phoneVal) {
+        tmp.push(DEFAUL_ERROR_MESSAGE.phonenumber);
+        // setErrorFields(tmp);
+        console.warn("phone", errorFields);
+      }
+
+      if (passVal) {
+        tmp.push(DEFAUL_ERROR_MESSAGE.password);
+        // setErrorFields(tmp);
+        console.warn("pass", errorFields);
+      }
+      setErrorFields(tmp);
+      return;
+    }
+
+    setErrorFields([]);
+    // signIn({ phonenumber: "863312292", password: "123456" });
+    const result = await signIn({ phonenumber, password });
+    if (!result) {
+      Keyboard.dismiss();
+      onOpen();
+      return;
+    }
     router.replace("(app)/home");
   };
 
@@ -113,6 +167,7 @@ export default function LoginAccount() {
               dataDetectorTypes={"phoneNumber"}
               keyboardType="phone-pad"
               maxLength={9}
+              focusable={!processing}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -120,10 +175,11 @@ export default function LoginAccount() {
                 alignSelf: "center",
                 height: "100%",
                 width: "100%",
-                color: colors.text_dark,
+                color: processing ? colors.text_detail : colors.text_dark,
               }}
             />
           </View>
+          {errorFields[0] && <ErrorMessage txt={errorFields[0]} />}
           <View
             style={{
               backgroundColor: colors.line,
@@ -140,6 +196,8 @@ export default function LoginAccount() {
               value={password}
               onChangeText={setPassword}
               placeholderTextColor={colors.text_detail}
+              secureTextEntry={isPassVisible}
+              focusable={!processing}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -147,36 +205,37 @@ export default function LoginAccount() {
                 alignSelf: "center",
                 height: "100%",
                 width: "90%",
-                color: colors.text_dark,
+                color: processing ? colors.text_detail : colors.text_dark,
               }}
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setIssPassVisible(!isPassVisible)}>
               <Octicons name="eye" size={14} />
             </TouchableOpacity>
           </View>
         </View>
+        {errorFields[1] && <ErrorMessage txt={errorFields[1]} />}
 
         <TouchableOpacity
           // onPress={() => router.push("login/home")}
           onPress={() => handleLogin()}
           style={{
             borderRadius: 10,
-            backgroundColor: isLoading ? colors.text_detail : colors.main_sec,
+            backgroundColor: processing ? colors.text_detail : colors.main_sec,
             padding: 10,
             alignItems: "center",
             marginTop: 20,
             flexDirection: "row",
             justifyContent: "center",
           }}
-          disabled={isLoading}
+          disabled={processing}
         >
           <CustomText
             txt="Entrar"
             font={AVAILABLE_FONTS.Regular}
             fontSize={14}
-            color={isLoading ? colors.text : colors.white}
+            color={processing ? colors.text : colors.white}
           />
-          {isLoading && (
+          {processing && (
             <View style={{ marginLeft: 10 }}>
               <ActivityIndicator color={colors.text} size={"small"} />
             </View>
@@ -208,7 +267,7 @@ export default function LoginAccount() {
 
       <View style={{ width: "100%" }}>
         <TouchableOpacity
-          disabled={isLoading}
+          disabled={processing}
           style={{
             borderRadius: 10,
             backgroundColor: colors.bg_primary,
@@ -227,7 +286,7 @@ export default function LoginAccount() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={isLoading}
+          disabled={processing}
           onPress={() => router.push("login/newAccountPhone")}
           style={{
             borderRadius: 10,
@@ -245,6 +304,19 @@ export default function LoginAccount() {
           />
         </TouchableOpacity>
       </View>
+      <Modalize
+        // modalStyle={{
+        //   height: hp("20%"),
+        //   width: wp("40%"),
+        //   alignSelf: "center",
+        // }}
+        disableScrollIfPossible
+        handlePosition="inside"
+        modalHeight={hp("50%")}
+        ref={modalizeRef}
+      >
+        <ErrorModal />
+      </Modalize>
     </MainContainer>
   );
 }
