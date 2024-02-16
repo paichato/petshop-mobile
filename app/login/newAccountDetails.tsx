@@ -6,7 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -18,12 +18,16 @@ import { Stack, useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 import MainContainer from "../../components/MainContainer";
+import api from "../../services/api";
 
 export default function NewAccountDetails() {
   const { colors } = theme;
   const router = useRouter();
   const [location, setLocation] = useState(false);
   const [visiblePass, setVisiblePass] = useState(false);
+  const [otp, setOTP] = useState();
+  const [count, setCount] = useState(95);
+  const [generatedCode, setGeneratedCode] = useState<any>(0);
 
   const options = [
     { id: 0, key: "sms", value: "SMS" },
@@ -38,6 +42,48 @@ export default function NewAccountDetails() {
   const handleLocation = (value: boolean) => {
     setLocation(value);
   };
+
+  const handleOtpField = (txt) => {
+    if (typeof txt !== "number") {
+      return;
+    }
+    setOTP(Number(txt));
+  };
+
+  const handleWhatsappCode = async () => {
+    let newCode = Math.floor(Math.random() * 1000000);
+    setGeneratedCode(newCode);
+
+    await api
+      .post(`/sendcode`, {
+        code: `${newCode}`,
+        phonenumber: `+258${phonenumber}`,
+      })
+      .then((res) => {
+        router.push("login/newAccountDetails");
+        setCount(90);
+      })
+      .catch((err) => {
+        console.info(err.message, err.response.data);
+        // setErrorRes(err.response.data.message);
+      })
+      .finally(() => {});
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setGeneratedCode(0);
+    }, 90000);
+  }, []);
+
+  useEffect(() => {
+    if (count > 0) {
+      var counterTimer = setTimeout(() => {
+        if (count > 0) setCount(count - 1);
+      }, 1000);
+    }
+    if (count === 0) clearTimeout(counterTimer);
+  }, [count]);
 
   return (
     <>
@@ -84,6 +130,58 @@ export default function NewAccountDetails() {
               {/* <TouchableOpacity>
       <Octicons name='pencil' size={20} />
     </TouchableOpacity> */}
+            </View>
+
+            <View style={{ marginTop: 20 }}>
+              <CustomText
+                txt="OTP"
+                font={AVAILABLE_FONTS.Medium}
+                fontSize={14}
+                color={colors.text_detail}
+              />
+
+              <View
+                style={{
+                  backgroundColor: colors.line,
+                  width: "50%",
+                  borderRadius: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                  marginTop: 10,
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <TextInput
+                  secureTextEntry={visiblePass}
+                  placeholder="palavra passe"
+                  maxLength={6}
+                  value={otp}
+                  onChange={handleOtpField}
+                  style={{
+                    padding: 10,
+                    fontSize: 14,
+                    fontFamily: AVAILABLE_FONTS.Medium,
+                    alignSelf: "center",
+                    height: "100%",
+                    width: "50%",
+                    color: colors.text_dark,
+                    backgroundColor: colors.line,
+                  }}
+                />
+                <TouchableOpacity disabled={count !== 0}>
+                  <CustomText
+                    styles={{
+                      borderRadius: 5,
+                      backgroundColor: colors.white,
+                      padding: 5,
+                      overflow: "hidden",
+                    }}
+                    color={count === 0 ? colors.text : colors.title}
+                    txt={count === 0 ? "Reenviar" : `Reenviar(${count})`}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={{ marginTop: 20 }}>
               <CustomText

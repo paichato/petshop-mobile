@@ -4,8 +4,10 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
+  Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,6 +19,12 @@ import { useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 import MainContainer from "../../components/MainContainer";
+import api from "../../services/api";
+import { IS_PHONE_INVALID } from "../../utils/util";
+import { Modalize } from "react-native-modalize";
+import ErrorMessage from "../../components/ErrorMessage";
+import ErrorModal from "../../components/ErrorModal";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function NewAccountPhone() {
   const { colors } = theme;
@@ -28,6 +36,139 @@ export default function NewAccountPhone() {
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [phonenumber, setPhonenumber] = useState("");
+  const [errorField, setErrorField] = useState("");
+  const [errorRes, setErrorRes] = useState("");
+  const [errorOTP, setErrorOTP] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingOTP, setIsLoadingOTP] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState<any>(0);
+
+  const modalizeRef = useRef<Modalize>(null);
+  const confirmRef = useRef<Modalize>(null);
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
+  const onOpenConfirm = () => {
+    confirmRef.current?.open();
+  };
+
+  const handlePhoneValidation = async () => {
+    if (IS_PHONE_INVALID(phonenumber)) {
+      setErrorField("Numero invalido");
+      return;
+    }
+    Keyboard.dismiss();
+    setIsLoading(true);
+    api
+      .get(`/find-user/${phonenumber}`)
+      .then((res) => {
+        setErrorRes("Usuario invalido ou indisponivel. \nTente outro!");
+        onOpen();
+      })
+      .catch((err) => {
+        console.log(err);
+        onOpenConfirm();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const handleWhatsappCode = async () => {
+    setIsLoadingOTP(true);
+    let newCode = Math.floor(Math.random() * 1000000);
+    setGeneratedCode(newCode);
+
+    await api
+      .post(`/sendcode`, {
+        code: `${newCode}`,
+        phonenumber: `+258${phonenumber}`,
+      })
+      .then((res) => {
+        router.push("login/newAccountDetails");
+        // toast({
+        //   title: "Codigo Enviado",
+        //   description: "Consulte o codigo enviado por whatsapp",
+        //   status: "success",
+        //   duration: 3000,
+        //   isClosable: false,
+        // });
+
+        // setTimeout(() => {
+        //   setGeneratedCode(0);
+        // }, 90000);
+      })
+      .catch((err) => {
+        // toast({
+        //   title: "Erro ao connectar ao whatsapp",
+        //   description: "Tente novamente, mais tarde",
+        //   status: "error",
+        //   duration: 3000,
+        //   isClosable: false,
+        // });
+        console.info(err.message, err.response.data);
+        setErrorRes(err.response.data.message);
+      })
+      .finally(() => setIsLoadingOTP(false));
+  };
+
+  const ConfirmOtpModal = () => {
+    return (
+      <View
+        style={{
+          // width: "40%",
+          height: "40%",
+          aspectRatio: 1,
+          elevation: 3,
+          backgroundColor: colors.white,
+          flex: 1,
+          padding: wp("10%"),
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <AntDesign name="checkcircle" size={hp("10%")} color={colors.sucess} />
+        <View style={{ alignItems: "center", marginTop: hp("5%") }}>
+          <CustomText
+            color={colors.text_dark}
+            font={FONTS.Bold}
+            fontSize={22}
+            txt={"Confirme o numero"}
+          />
+          <CustomText
+            color={colors.text}
+            fontSize={16}
+            styles={{ textAlign: "center" }}
+            txt={`Pretende receber o codigo OTP  ${
+              selectedOption.value === "SMS" ? "por SMS" : "pelo Whatsapp"
+            } no numero ${phonenumber}?`}
+          />
+          <TouchableOpacity
+            onPress={handleWhatsappCode}
+            disabled={isLoadingOTP}
+            style={{
+              borderRadius: 10,
+              backgroundColor: isLoading ? colors.line : colors.sucess,
+              padding: 10,
+              width: wp("30%"),
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: hp("5%"),
+            }}
+          >
+            <CustomText
+              txt={"Confirmar"}
+              font={AVAILABLE_FONTS.Medium}
+              fontSize={14}
+              color={isLoadingOTP ? colors.text_dark : colors.white}
+            />
+            {isLoadingOTP && (
+              <ActivityIndicator size={"small"} color={"white"} />
+            )}
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <MainContainer>
@@ -98,6 +239,11 @@ export default function NewAccountPhone() {
 
             <TextInput
               placeholder="821010100"
+              value={phonenumber}
+              onChangeText={setPhonenumber}
+              dataDetectorTypes={"phoneNumber"}
+              keyboardType="phone-pad"
+              maxLength={9}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -110,15 +256,19 @@ export default function NewAccountPhone() {
             />
           </View>
         </View>
+        {errorField && <ErrorMessage txt={errorField} />}
 
         <TouchableOpacity
-          onPress={() => router.push("login/newAccountDetails")}
+          onPress={handlePhoneValidation}
+          disabled={isLoading}
           style={{
             borderRadius: 10,
-            backgroundColor: colors.main_sec,
+            backgroundColor: isLoading ? colors.line : colors.main_sec,
             padding: 10,
             alignItems: "center",
             marginTop: 20,
+            flexDirection: "row",
+            justifyContent: "center",
           }}
         >
           <CustomText
@@ -127,6 +277,9 @@ export default function NewAccountPhone() {
             fontSize={14}
             color={colors.white}
           />
+          {isLoading && (
+            <ActivityIndicator size={"small"} color={colors.text} />
+          )}
         </TouchableOpacity>
       </View>
 
@@ -189,6 +342,22 @@ export default function NewAccountPhone() {
           />
         </TouchableOpacity>
       </View>
+      <Modalize
+        disableScrollIfPossible
+        handlePosition="inside"
+        modalHeight={hp("50%")}
+        ref={modalizeRef}
+      >
+        <ErrorModal txt={errorRes} />
+      </Modalize>
+      <Modalize
+        disableScrollIfPossible
+        handlePosition="inside"
+        modalHeight={hp("50%")}
+        ref={confirmRef}
+      >
+        <ConfirmOtpModal />
+      </Modalize>
     </MainContainer>
   );
 }

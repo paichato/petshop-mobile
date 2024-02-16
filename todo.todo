@@ -16,3 +16,13 @@
 
 ☐ Add Schema Anuncio/Add that can COntain Dog or Product
 s
+
+To finish
+
+☐ FInsih accoutn creation flow
+☐ Validate fields
+☐ Add formik or use logic
+☐ Add countries
+☐ Add Provider to get generated code, for account creation mstly, logic to measure progress after ccount creation
+☐ Finish create account dlow
+☐ Add Edit proflie screen in case of not filling every steps upon account creation

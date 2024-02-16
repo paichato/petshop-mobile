@@ -25,6 +25,7 @@ import { Modalize } from "react-native-modalize";
 import { AntDesign } from "@expo/vector-icons";
 import ErrorModal from "../../components/ErrorModal";
 import ErrorMessage from "../../components/ErrorMessage";
+import { IS_PASS_VALID, IS_PHONE_INVALID } from "../../utils/util";
 
 export default function LoginAccount() {
   const { colors } = theme;
@@ -55,25 +56,19 @@ export default function LoginAccount() {
   // };
 
   const handleLogin = async () => {
-    let phoneVal = Boolean(
-      phonenumber.length < 9 ||
-        Number(phonenumber) < 820000000 ||
-        Number(phonenumber) > 879999999
-    );
-    const passVal = Boolean(password.length < 5);
     const DEFAUL_ERROR_MESSAGE = {
       phonenumber: "Numero invalido",
       password: "Senha invalida. Min 6 caracteres",
     };
-    if (phoneVal || passVal) {
+    if (IS_PHONE_INVALID(phonenumber) || IS_PASS_VALID(password)) {
       let tmp = [];
-      if (phoneVal) {
+      if (IS_PHONE_INVALID(phonenumber)) {
         tmp.push(DEFAUL_ERROR_MESSAGE.phonenumber);
         // setErrorFields(tmp);
         console.warn("phone", errorFields);
       }
 
-      if (passVal) {
+      if (IS_PASS_VALID(password)) {
         tmp.push(DEFAUL_ERROR_MESSAGE.password);
         // setErrorFields(tmp);
         console.warn("pass", errorFields);
@@ -167,7 +162,7 @@ export default function LoginAccount() {
               dataDetectorTypes={"phoneNumber"}
               keyboardType="phone-pad"
               maxLength={9}
-              focusable={!processing}
+              editable={!processing}
               style={{
                 padding: 10,
                 fontSize: 14,
@@ -197,7 +192,7 @@ export default function LoginAccount() {
               onChangeText={setPassword}
               placeholderTextColor={colors.text_detail}
               secureTextEntry={isPassVisible}
-              focusable={!processing}
+              editable={!processing}
               style={{
                 padding: 10,
                 fontSize: 14,
