@@ -42,7 +42,6 @@ export default function LoginAccount() {
   const [password, setPassword] = useState("");
   const [errorFields, setErrorFields] = useState(["", ""]);
   const [isPassVisible, setIssPassVisible] = useState(false);
-  const [isModalVisible, setModalVisible] = useState(false);
   const modalizeRef = useRef<Modalize>(null);
 
   const onOpen = () => {

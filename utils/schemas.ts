@@ -14,7 +14,8 @@ let loginSchema = object({
 });
 
 let acoountCreationSchema = object({
-    phonenumber: string().required('campo obrigatorio').max(9, 'insira um numero valido').min(9, 'insira um numero valido'),
+    // phonenumber: string().required('campo obrigatorio').max(9, 'insira um numero valido').min(9, 'insira um numero valido'),
+    otp: string().required("campo obrigatorio").max(6, 'codigo deve conter 6 digitos').min(6, 'codigo deve conter 6 digitos'),
     password: string().required().min(6, 'senha deve conter pelo menos 6 caracteres'),
     confirmPassword: string().required('campo obrigatorio').min(6).trim().equalTo(ref("password")),
     location: mixed().oneOf(["Maputo", "Matola", "Gaza",

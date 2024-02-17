@@ -54,6 +54,8 @@ export default function NewAccountPhone() {
   };
 
   const handlePhoneValidation = async () => {
+    return router.push("login/newAccountDetails");
+
     if (IS_PHONE_INVALID(phonenumber)) {
       setErrorField("Numero invalido");
       return;
