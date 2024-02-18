@@ -48,6 +48,7 @@ import NewAccountSteps from "./login/newAccountSteps";
 import NewAccountPhone from "./login/newAccountPhone";
 import NewAccountDetails from "./login/newAccountDetails";
 import { AuthProvider } from "../context/auth";
+import { NewAccountProvider } from "../context/newAccountContext";
 // import ShopDogs from './(app)/shopDogs';
 
 export {
@@ -104,16 +105,18 @@ function LayoutNav() {
   return (
     <>
       <AuthProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          {/* <LoginAccount/> */}
-          {/* <Home/> */}
-          <Stack screenOptions={{ headerShown: false }} />
-          {/* <Stack.Screen name="/loginAccount" options={{ headerShown: false }}  />
+        <NewAccountProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            {/* <LoginAccount/> */}
+            {/* <Home/> */}
+            <Stack screenOptions={{ headerShown: false }} />
+            {/* <Stack.Screen name="/loginAccount" options={{ headerShown: false }}  />
           <Stack.Screen name="/newAccountPhone" options={{ headerShown: false }} /> */}
-          {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-        </ThemeProvider>
+            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
+          </ThemeProvider>
+        </NewAccountProvider>
       </AuthProvider>
     </>
   );

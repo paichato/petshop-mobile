@@ -25,6 +25,7 @@ import { Modalize } from "react-native-modalize";
 import ErrorMessage from "../../components/ErrorMessage";
 import ErrorModal from "../../components/ErrorModal";
 import { AntDesign } from "@expo/vector-icons";
+import { useNew } from "../../context/newAccountContext";
 
 export default function NewAccountPhone() {
   const { colors } = theme;
@@ -43,6 +44,7 @@ export default function NewAccountPhone() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOTP, setIsLoadingOTP] = useState(false);
   const [generatedCode, setGeneratedCode] = useState<any>(0);
+  const { generateOtpCode, updateUserData } = useNew();
 
   const modalizeRef = useRef<Modalize>(null);
   const confirmRef = useRef<Modalize>(null);
@@ -54,7 +56,7 @@ export default function NewAccountPhone() {
   };
 
   const handlePhoneValidation = async () => {
-    return router.push("login/newAccountDetails");
+    // return router.push("login/newAccountDetails");
 
     if (IS_PHONE_INVALID(phonenumber)) {
       setErrorField("Numero invalido");
@@ -77,8 +79,7 @@ export default function NewAccountPhone() {
 
   const handleWhatsappCode = async () => {
     setIsLoadingOTP(true);
-    let newCode = Math.floor(Math.random() * 1000000);
-    setGeneratedCode(newCode);
+    let newCode = generateOtpCode();
 
     await api
       .post(`/sendcode`, {
@@ -86,6 +87,7 @@ export default function NewAccountPhone() {
         phonenumber: `+258${phonenumber}`,
       })
       .then((res) => {
+        updateUserData({ phonenumber: phonenumber });
         router.push("login/newAccountDetails");
         // toast({
         //   title: "Codigo Enviado",

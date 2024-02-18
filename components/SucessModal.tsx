@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import React from "react";
 import theme from "../styles/theme";
 import { AntDesign } from "@expo/vector-icons";
@@ -9,12 +9,10 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function ErrorModal({
+export default function SucessModal({
   title = "Opah...",
   txt = "Usuário não existe ou senha inválida",
-  align = false,
-  btn = false,
-  btnText = "Tentar novamente",
+  isDisabled = false,
   action,
 }) {
   const colors = theme.colors;
@@ -33,7 +31,7 @@ export default function ErrorModal({
         justifyContent: "center",
       }}
     >
-      <AntDesign name="closecircle" size={hp("10%")} color="red" />
+      <AntDesign name="closecircle" size={hp("10%")} color={colors.sucess} />
       <View style={{ alignItems: "center", marginTop: hp("5%") }}>
         <CustomText
           color={colors.text_dark}
@@ -41,34 +39,29 @@ export default function ErrorModal({
           fontSize={22}
           txt={title}
         />
-        <CustomText
-          color={colors.text}
-          fontSize={16}
-          txt={txt}
-          styles={align && { textAlign: "center" }}
-        />
+        <CustomText color={colors.text} fontSize={16} txt={txt} />
       </View>
-      {btn && (
-        <TouchableOpacity
-          onPress={action}
-          style={{
-            borderRadius: 10,
-            backgroundColor: "red",
-            padding: 10,
-            width: wp("30%"),
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: hp("5%"),
-          }}
-        >
-          <CustomText
-            txt={btnText}
-            font={AVAILABLE_FONTS.Medium}
-            fontSize={14}
-            color={colors.white}
-          />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        onPress={action}
+        disabled={isDisabled}
+        style={{
+          borderRadius: 10,
+          backgroundColor: isDisabled ? colors.line : colors.sucess,
+          padding: 10,
+          width: wp("30%"),
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: hp("5%"),
+        }}
+      >
+        <CustomText
+          txt={"Confirmar"}
+          font={AVAILABLE_FONTS.Medium}
+          fontSize={14}
+          color={isDisabled ? colors.text_dark : colors.white}
+        />
+        {isDisabled && <ActivityIndicator size={"small"} color={"white"} />}
+      </TouchableOpacity>
     </View>
   );
 }
