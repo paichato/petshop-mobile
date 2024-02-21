@@ -19,10 +19,17 @@ s
 
 To finish
 
-☐ FInsih accoutn creation flow
-☐ Validate fields
-☐ Add formik or use logic
-☐ Add countries
-☐ Add Provider to get generated code, for account creation mstly, logic to measure progress after ccount creation
-☐ Finish create account dlow
+✔ FInsih accoutn creation flow @done (2/21/2024, 8:04:17 PM)
+✔ Validate fields @done (2/18/2024, 2:52:28 AM)
+✔ Add formik or use logic @done (2/18/2024, 2:52:30 AM)
+✔ Add countries @done (2/18/2024, 2:52:32 AM)
+✔ Add Provider to get generated code, for account creation mstly, logic to measure progress after ccount creation @done (2/21/2024, 8:04:26 PM)
+✔ Finish create account dlow @done (2/21/2024, 8:04:20 PM)
 ☐ Add Edit proflie screen in case of not filling every steps upon account creation
+✔ Account update flow @done (2/21/2024, 8:04:14 PM)
+☐ Edit profile
+☐ View Profile
+☐ List dogs
+☐ View Dog
+☐ Search dogs
+☐ Create dog
