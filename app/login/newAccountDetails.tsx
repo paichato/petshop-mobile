@@ -93,7 +93,7 @@ export default function NewAccountDetails() {
         phonenumber: `+258${userData.phonenumber}`,
       })
       .then((res) => {
-        router.push("login/newAccountDetails");
+        // router.push("login/newAccountDetails");
         setCount(90);
       })
       .catch((err) => {
@@ -166,6 +166,7 @@ export default function NewAccountDetails() {
           phonenumber: userData.phonenumber,
           name: username,
           location,
+          password: password,
         });
         setThisRes(true);
         console.log(res);

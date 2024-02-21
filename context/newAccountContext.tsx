@@ -33,6 +33,7 @@ interface UserState {
   name?: string;
   type?: string;
   location?: string;
+  password?: string;
   //   user?: User;
 }
 

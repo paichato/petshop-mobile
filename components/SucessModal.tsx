@@ -8,12 +8,16 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import LottieView from "lottie-react-native";
 
 export default function SucessModal({
   title = "Opah...",
   txt = "Usuário não existe ou senha inválida",
   isDisabled = false,
   action,
+  btnText = "Confirmar",
+  align = true,
+  lottie = false,
 }) {
   const colors = theme.colors;
 
@@ -31,7 +35,18 @@ export default function SucessModal({
         justifyContent: "center",
       }}
     >
-      <AntDesign name="closecircle" size={hp("10%")} color={colors.sucess} />
+      {lottie ? (
+        <LottieView
+          autoPlay
+          loop={false}
+          style={{
+            height: hp(10),
+          }}
+          source={require("../assets/lotties/check-lottie.json")}
+        />
+      ) : (
+        <AntDesign name="checkcircle" size={hp("10%")} color={colors.sucess} />
+      )}
       <View style={{ alignItems: "center", marginTop: hp("5%") }}>
         <CustomText
           color={colors.text_dark}
@@ -39,7 +54,12 @@ export default function SucessModal({
           fontSize={22}
           txt={title}
         />
-        <CustomText color={colors.text} fontSize={16} txt={txt} />
+        <CustomText
+          color={colors.text}
+          fontSize={16}
+          txt={txt}
+          styles={{ textAlign: align }}
+        />
       </View>
       <TouchableOpacity
         onPress={action}
@@ -55,7 +75,7 @@ export default function SucessModal({
         }}
       >
         <CustomText
-          txt={"Confirmar"}
+          txt={btnText}
           font={AVAILABLE_FONTS.Medium}
           fontSize={14}
           color={isDisabled ? colors.text_dark : colors.white}

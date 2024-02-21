@@ -23,7 +23,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
-  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signIn: (credentials: SignInCredentials) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;

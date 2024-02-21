@@ -248,6 +248,8 @@ export default function NewAccountPhone() {
               dataDetectorTypes={"phoneNumber"}
               keyboardType="phone-pad"
               maxLength={9}
+              editable={!isLoadingOTP}
+              focusable={!isLoadingOTP}
               style={{
                 padding: 10,
                 fontSize: 14,
