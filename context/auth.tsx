@@ -67,7 +67,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const { token } = response.data.user;
       setData({ token, user });
       api.defaults.headers.authorization = `Bearer ${token}`;
-      setSession(token);
+
+      setSession(JSON.stringify({ token, user }));
       setProcessing(false);
       return true;
       // }

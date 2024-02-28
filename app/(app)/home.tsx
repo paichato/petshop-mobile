@@ -8,7 +8,7 @@ import {
   TextInput,
   ImageBackground,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,6 +24,7 @@ import CustomText from "../../components/CustomText";
 import Carousel from "react-native-snap-carousel";
 import FONTS from "../../constants/FONTS";
 import { useSession } from "../../context/auth";
+import api from "../../services/api";
 
 interface IProduct {
   description: string;
@@ -51,6 +52,12 @@ export default function Home() {
     signOut();
     router.replace("login/onboarding");
   };
+
+  const user = JSON.parse(session);
+
+  useEffect(() => {
+    api.defaults.headers.authorization = `Bearer ${user?.token}`;
+  }, []);
 
   const DescItem = ({ name = "ruby", type = "product" }) => {
     return (
@@ -101,7 +108,7 @@ export default function Home() {
         <View style={{ alignItems: "center", flexDirection: "row" }}>
           <CustomText txt="Bem vindo, " fontSize={18} />
           <CustomText
-            txt="fulano"
+            txt={user.user.userExists.name ?? "-"}
             fontSize={18}
             font={FONTS.Bold}
             color={colors.main_sec}

@@ -5,8 +5,11 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,6 +20,8 @@ import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Link, useRouter } from "expo-router";
 import MainContainer from "../../components/MainContainer";
+import api from "../../services/api";
+import DogCard from "../../components/DogCard";
 
 interface IProduct {
   description: string;
@@ -32,10 +37,82 @@ interface IProduct {
 export default function ShopDogs() {
   const { colors } = theme;
   const router = useRouter();
+  const [dogsData, setDogsData] = useState([]);
+  const [data, setData] = useState({});
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    // if(page)
+    setRefreshing(true);
+    setPage(1);
+    getDogs();
+    // setTimeout(() => {
+    //   setRefreshing(false);
+    // }, 2000);
+  }, []);
+
+  useEffect(() => {
+    getDogs();
+  }, [page]);
+
+  const getDogs = async () => {
+    if (page > data.totalPages) {
+      return;
+    }
+
+    setLoading(true);
+
+    api
+      .get(`/dogs/all?page=${page}`)
+      .then((res) => {
+        if (page > 1 && page <= data.totalPages) {
+          setDogsData([...dogsData, ...res.data.result]);
+          setData(res.data);
+          return;
+        }
+
+        setDogsData(res.data.result);
+        setData(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setData([]);
+      })
+      .finally(() => {
+        setRefreshing(false);
+        setLoadMore(false);
+        setLoading(false);
+      });
+  };
+
+  function handleFetchMore(distance) {
+    if (distance < 1) {
+      return;
+    }
+    if (data.totalPages == page) {
+      return;
+    }
+    setLoadMore(true);
+    setPage((oldValue) => oldValue + 1);
+  }
 
   const ShopItem = ({
+    title = "Happy Colar",
+    owner = "Happy Colar",
+    desc = "Something nice",
+    race = "Maltes",
+    colors = "",
+    price = "12000",
+    location = "Maputo",
+    age = "12",
     img = require("../../assets/images/pet-belt.png"),
     type = "product",
+    vacinated = false,
+    totalImgs = 1,
   }) => {
     const CardFooter = () => {
       return (
@@ -64,7 +141,7 @@ export default function ShopDogs() {
                 marginLeft: 5,
               }}
             >
-              📍Maputo
+              📍{location}
             </Text>
           </View>
           <TouchableOpacity>
@@ -81,24 +158,26 @@ export default function ShopDogs() {
               verificado ✨
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={{
-                color: colors.white,
-                fontSize: 12,
-                fontWeight: "800",
-                backgroundColor: colors.sucess,
-                borderRadius: 5,
-                padding: 5,
-              }}
-            >
-              vacinado
-            </Text>
-          </TouchableOpacity>
+          {vacinated && (
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: colors.white,
+                  fontSize: 12,
+                  fontWeight: "800",
+                  backgroundColor: colors.sucess,
+                  borderRadius: 5,
+                  padding: 5,
+                }}
+              >
+                vacinado
+              </Text>
+            </TouchableOpacity>
+          )}
           <Text
             style={{ color: colors.main_sec, fontSize: 18, fontWeight: "900" }}
           >
-            6 meses
+            {age} meses
           </Text>
         </View>
       );
@@ -164,7 +243,7 @@ export default function ShopDogs() {
                 borderRadius: 5,
               }}
             >
-              <Text style={{ fontWeight: "200", fontSize: 10 }}>1/6</Text>
+              <Text style={{ fontWeight: "200", fontSize: 10 }}>1/{}</Text>
             </View>
             <Image
               source={img}
@@ -305,10 +384,46 @@ export default function ShopDogs() {
 
       <View>
         <Text style={{ fontSize: 22, fontWeight: "800" }}>Cães</Text>
-        <Text style={{ fontSize: 22, color: colors.main_sec }}>{`(200)`}</Text>
+        <Text
+          style={{ fontSize: 22, color: colors.main_sec, textAlign: "center" }}
+        >{`(${dogsData.length})`}</Text>
       </View>
 
-      <ScrollView
+      {loading && !dogsData[0] && (
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <LottieView
+            autoPlay
+            loop={true}
+            style={{
+              //   width: 60,
+              height: hp(30),
+            }}
+            source={require("../../assets/lotties/122299-dog-pet-.json")}
+          />
+        </View>
+      )}
+
+      <FlatList
+        data={dogsData}
+        renderItem={({ item }) => <DogCard item={item} />}
+        horizontal={false}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        contentContainerStyle={{}}
+        onEndReachedThreshold={0.1}
+        onEndReached={({ distanceFromEnd }) => {
+          handleFetchMore(distanceFromEnd);
+        }}
+        ListFooterComponent={
+          loadMore ? (
+            <ActivityIndicator size="large" color={colors.text_dark} />
+          ) : (
+            <></>
+          )
+        }
+      />
+
+      {/* <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -316,16 +431,26 @@ export default function ShopDogs() {
           flexWrap: "wrap",
           justifyContent: "space-between",
         }}
+        refreshControl={
+          <RefreshControl
+            colors={colors.text_dark}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+        
       >
+        {dogsData.map((item) => (
+          <DogCard item={item} />
+        ))} */}
+      {/* <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-      </ScrollView>
+        <ShopItem img={require("../../assets/images/Puppy2.png")} /> */}
+      {/* </ScrollView> */}
       <View
         style={{
           position: "absolute",

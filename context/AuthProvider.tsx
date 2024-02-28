@@ -23,7 +23,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const { token } = response.data.user;
     setData({ token, user });
     api.defaults.headers.authorization = `Bearer ${token}`;
-    setSession("xxx");
+    setSession(JSON.stringify({ token, user }));
   };
 
   const signOut = async () => {
