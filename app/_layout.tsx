@@ -49,6 +49,7 @@ import NewAccountPhone from "./login/newAccountPhone";
 import NewAccountDetails from "./login/newAccountDetails";
 import { AuthProvider } from "../context/auth";
 import { NewAccountProvider } from "../context/newAccountContext";
+import { AppProvider } from "../context/AppContext";
 // import ShopDogs from './(app)/shopDogs';
 
 export {
@@ -103,7 +104,7 @@ function LayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <>
+    <><AppProvider>
       <AuthProvider>
         <NewAccountProvider>
           <ThemeProvider
@@ -118,6 +119,7 @@ function LayoutNav() {
           </ThemeProvider>
         </NewAccountProvider>
       </AuthProvider>
+      </AppProvider>
     </>
   );
 }

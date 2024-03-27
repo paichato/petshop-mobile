@@ -9,7 +9,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,6 +22,11 @@ import { Link, useRouter } from "expo-router";
 import MainContainer from "../../components/MainContainer";
 import api from "../../services/api";
 import DogCard from "../../components/DogCard";
+import { Modalize } from "react-native-modalize";
+import { AVAILABLE_FONTS } from "../../constants/FONTS";
+import CustomText from "../../components/CustomText";
+import { LOCATIONS } from "../../utils/mocks";
+import { useAppData } from "../../context/AppContext";
 
 interface IProduct {
   description: string;
@@ -40,9 +45,104 @@ export default function ShopDogs() {
   const [dogsData, setDogsData] = useState([]);
   const [data, setData] = useState({});
   const [page, setPage] = useState(1);
+  const [filterPage, setFilterPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [loading, setLoading] = useState(false);
+  const modalizeRef = useRef<Modalize>(null);
+  const [selected, setSelected] = useState([]);
+  const [loadRaces, setLoadRaces] = useState(false);
+  const [hasFilters, setHasFilters] = useState(false);
+  const [filterUrl, setFilterUrl] = useState(`/dogs/search?page=${filterPage}`);
+  const [races, setRaces] = useState([]);
+  const {getDogRaces,appData}=useAppData();
+
+  const DEFAULT_FILTER=[{groupId:"h_date", id:"recent", value:"Mais recente"},{ id: "mid", value: "relevante", groupId:"h_price" },{id:"all_races", value:"Todas", groupId:"h_race"},{id:"all_loc", value:"Todas", groupId:"h_location"}];
+
+  const {dogRaces}=appData.filters;
+
+  const mappedLocations=LOCATIONS
+  LOCATIONS.forEach(i=>i.filter=`location=${i.value}`);
+
+  const filterOptions = [
+    {
+      id: "h_date", header: "Filtrar por",
+      options: [
+        
+        { id: "recent", value: "Mais recente", filter: "order=asc" },
+        { id: "old", value: "Antigas", filter: "order=desc" },
+      ]
+    },
+    {
+      id: "h_price", header: "Precos",
+      options: [
+        
+        { id: "mid", value: "relevante", filter: "asc" },
+        { id: "cheaper", value: "Mais barato", filter: "price=asc" },
+        { id: "expensive", value: "Mais caro", filter: "price=desc" },
+      ]
+    },
+    {
+      id: "h_race", header: "Raca",
+      options: [
+        {id:"all_races", value:"Todas"},
+        ...dogRaces
+        // { id: "unkown", value: "relevante", filter: "asc" },
+        // { id: "cheaper", value: "Mais barato", filter: "asc" },
+        // { id: "expensive", value: "Mais caro", filter: "asc" },
+      ]
+    },
+    {
+      id: "h_location", header: "Localizacao",
+      options: [
+        {id:"all_loc", value:"Todas"},
+        ...mappedLocations
+        // { id: "mid", value: "relevante", filter: "asc" },
+        // { id: "cheaper", value: "Mais barato", filter: "asc" },
+        // { id: "expensive", value: "Mais caro", filter: "asc" },
+      ]
+    },
+  ]
+
+  // const getDogRaces=()=>{
+  //   setLoadRaces(true);
+  //   //TO-DO add logic to load once and add to context
+  //   api
+  //     .get(`/dogs/races`)
+  //     .then((res) => {
+  //       const tmp=Object.keys( res.data);
+  //       setRaces(tmp);
+
+
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+        
+  //     })
+  //     .finally(() => {
+  //       setLoadRaces(false);
+  //     });
+  // }
+
+  const handleUrlParse=(currentPage:number)=>{
+    let newUrl=`/dogs/search?page=${currentPage}`;
+    const tmp=[];
+    selected.forEach((i, index)=>{
+      // if(index ===selected.length-1){
+      //   return tmp.push(i.filter)
+      // }
+      // tmp.push(`${i.filter}&`)
+      tmp.push(`${i.filter}`);
+    });
+    
+    newUrl=newUrl+'&'+tmp.join('&');
+    setFilterUrl(newUrl);
+    setHasFilters(true);
+    console.log(newUrl);
+    
+    getFilteredDogs(newUrl);
+  }
 
   const onRefresh = useCallback(() => {
     // if(page)
@@ -54,9 +154,58 @@ export default function ShopDogs() {
     // }, 2000);
   }, []);
 
+  const onOpenFilter = () => {
+    modalizeRef.current?.open();
+  };
+
   useEffect(() => {
+
+    if(hasFilters) return
+
     getDogs();
+    getDogRaces();
   }, [page]);
+
+  // useEffect(() => {
+
+   
+
+  //   getFilteredDogs();
+  
+  // }, [filterPage]);
+
+  const getFilteredDogs = async (url:string) => {
+    if (filterPage > data.totalPages) {
+      return;
+    }
+
+    setLoading(true);
+    setDogsData([]);
+    api
+      .get(url)
+      .then((res) => {
+        if (filterPage > 1 && filterPage <= data.totalPages) {
+          setDogsData(JSON.parse(JSON.stringify([...dogsData, ...res.data.result])));
+          // setDogsData([...dogsData, ...res.data.result]);
+          setData(res.data);
+          return;
+        }
+
+        setDogsData(JSON.parse(JSON.stringify(res.data.result)));
+        // setDogsData(res.data.result);
+        setData(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setData([]);
+      })
+      .finally(() => {
+        setRefreshing(false);
+        setLoadMore(false);
+        setLoading(false);
+      });
+  };
 
   const getDogs = async () => {
     if (page > data.totalPages) {
@@ -69,12 +218,14 @@ export default function ShopDogs() {
       .get(`/dogs/all?page=${page}`)
       .then((res) => {
         if (page > 1 && page <= data.totalPages) {
-          setDogsData([...dogsData, ...res.data.result]);
+          // setDogsData([...dogsData, ...res.data.result]);
+          setDogsData(JSON.parse(JSON.stringify([...dogsData, ...res.data.result])));
           setData(res.data);
           return;
         }
 
-        setDogsData(res.data.result);
+        // setDogsData(res.data.result);
+        setDogsData(JSON.parse(JSON.stringify(res.data.result)));
         setData(res.data);
         console.log(res.data);
       })
@@ -96,8 +247,42 @@ export default function ShopDogs() {
     if (data.totalPages == page) {
       return;
     }
+
+    if(hasFilters){
+      // let newpage=filterUrl.split('&').find(i=>i.includes('page')).split('=')[1]
+      setFilterPage(oldValue=>oldValue+1);
+      handleUrlParse(filterPage)
+    }
+
     setLoadMore(true);
     setPage((oldValue) => oldValue + 1);
+  }
+
+  const handleSelection = (item, groupId) => {
+    if(selected.some((i) => i.id == item.id)){
+      return
+    }
+    const tmp = [...selected];
+    console.log(selected);
+
+
+    if (selected.some((i) => i.groupId == groupId)) {
+      const newSelected = tmp.filter((i) => i.groupId !== groupId);
+      newSelected.push({...item, groupId:groupId});
+      console.log("NEW SELECTED:", newSelected);
+      setSelected(newSelected);
+      return;
+    }
+
+    tmp.push({...item, groupId:groupId});
+    setSelected(tmp);
+  };
+
+  const handleClear=()=>{
+    setHasFilters(false);
+    setSelected(DEFAULT_FILTER);
+    setPage(1);
+    getDogs();
   }
 
   const ShopItem = ({
@@ -243,7 +428,7 @@ export default function ShopDogs() {
                 borderRadius: 5,
               }}
             >
-              <Text style={{ fontWeight: "200", fontSize: 10 }}>1/{}</Text>
+              <Text style={{ fontWeight: "200", fontSize: 10 }}>1/{ }</Text>
             </View>
             <Image
               source={img}
@@ -366,6 +551,66 @@ export default function ShopDogs() {
     );
   };
 
+  const SelectorItem = ({ item, groupId }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => handleSelection(item, groupId)}
+        style={[
+          {
+            borderWidth: 1,
+            borderColor: colors.ligth_gray,
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 8,
+            marginRight:8
+          },
+          selected.some((i) => i.id == item.id) && {
+            borderColor: colors.main_sec,
+            backgroundColor: colors.main_sec_10,
+          },
+        ]}
+      >
+        <CustomText txt={item.value} fontSize={14} color={colors.text} />
+      </TouchableOpacity>
+    );
+  };
+
+  const FilterWrapper=({item})=>{
+    return <View style={{marginTop:8, padding:8}}>
+      <CustomText fontSize={16} font={AVAILABLE_FONTS.SemiBold} color={colors.main_sec} txt={item.header}/>
+      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"flex-start", flexWrap:"wrap"}}>
+          {item.options.map((el)=><SelectorItem groupId={item.id} item={el}/>)}
+      </View>
+    </View>
+  }
+
+  const FilterModal = () => {
+    return <View>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: colors.line, marginTop: 20 }}>
+        <TouchableOpacity onPress={handleClear}><CustomText
+          txt="Limpar"
+          font={AVAILABLE_FONTS.Regular}
+          fontSize={16}
+          color={colors.text}
+        /></TouchableOpacity>
+        <CustomText
+          txt="Filtros"
+          font={AVAILABLE_FONTS.Bold}
+          color={colors.main_sec}
+          fontSize={16}
+        />
+
+        <TouchableOpacity onPress={()=>handleUrlParse(filterPage)}><CustomText
+          txt="Aplicar"
+          color={colors.text}
+          font={AVAILABLE_FONTS.Regular}
+          fontSize={16}
+        /></TouchableOpacity>
+      </View>
+      {filterOptions.map((element)=><FilterWrapper item={element}/>)}
+    </View>
+  }
+
   return (
     <MainContainer>
       <Text>Shop</Text>
@@ -451,7 +696,7 @@ export default function ShopDogs() {
         <ShopItem img={require("../../assets/images/Puppy2.png")} />
         <ShopItem img={require("../../assets/images/Puppy2.png")} /> */}
       {/* </ScrollView> */}
-      <View
+      <TouchableOpacity onPress={onOpenFilter}
         style={{
           position: "absolute",
           bottom: 40,
@@ -462,7 +707,20 @@ export default function ShopDogs() {
         }}
       >
         <Octicons name="filter" size={24} color={colors.white} />
-      </View>
+      </TouchableOpacity>
+      <Modalize
+        // modalStyle={{
+        //   height: hp("20%"),
+        //   width: wp("40%"),
+        //   alignSelf: "center",
+        // }}
+        disableScrollIfPossible
+        handlePosition="inside"
+        modalHeight={hp("50%")}
+        ref={modalizeRef}
+      >
+        <FilterModal />
+      </Modalize>
     </MainContainer>
   );
 }

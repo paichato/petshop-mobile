@@ -1,15 +1,15 @@
 const LOCATIONS = [
-    { id: 0, value: "Maputo" },
-    { id: 1, value: "Matola" },
-    { id: 2, value: "Gaza" },
-    { id: 3, value: "Inhambane" },
-    { id: 4, value: "Sofala" },
-    { id: 5, value: "Manica" },
-    { id: 6, value: "Zambézia" },
-    { id: 7, value: "Tete" },
-    { id: 8, value: "Niassa" },
-    { id: 9, value: "Nampula" },
-    { id: 10, value: "Cabo_Delgado" },
+    { id: "mpt", value: "Maputo" },
+    { id: "mtl", value: "Matola" },
+    { id: "gz", value: "Gaza" },
+    { id: "inh", value: "Inhambane" },
+    { id: "sof", value: "Sofala" },
+    { id: "man", value: "Manica" },
+    { id: "zamb", value: "Zambézia" },
+    { id: "tete", value: "Tete" },
+    { id: "nia", value: "Niassa" },
+    { id: "nam", value: "Nampula" },
+    { id: "cabo", value: "Cabo_Delgado" },
 ];
 
 export { LOCATIONS };
