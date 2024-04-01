@@ -18,7 +18,7 @@ import Colors from "../../constants/Colors";
 import theme from "../../styles/theme";
 import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-import { Link, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -27,6 +27,8 @@ import FONTS from "../../constants/FONTS";
 import CustomText from "../../components/CustomText";
 import ImageView from "react-native-image-viewing";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppData } from "../../context/AppContext";
+import MainColorView from "../../components/MainColorView";
 
 interface IProduct {
   description: string;
@@ -39,11 +41,20 @@ interface IProduct {
   merchant: string;
 }
 
+const IMAGE_PLACEHOLDER="../../assets/images/Puppy2.png";
+
 export default function ListDog({ navigation }) {
   const { colors } = theme;
   const router = useRouter();
+  const {appData}=useAppData();
+  console.log("----------------")
+  console.log(appData.listDog);
+
+  const {listDog : dog}=appData
   const [selectedImage, setSelectedImage] = useState(
-    require("../../assets/images/Puppy2.png")
+    dog?.images[0]?.url
+                ? { uri: dog?.images[0]?.url }
+                : require("../../assets/images/Puppy2.png")
   );
   const [visibleImage, setIsVisibleImage] = useState(false);
 
@@ -223,7 +234,7 @@ export default function ListDog({ navigation }) {
                     fontFamily: FONTS.Bold,
                   }}
                 >
-                  Swat K9
+                  {dog.title}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <MaterialIcons
@@ -326,7 +337,7 @@ export default function ListDog({ navigation }) {
         ></View>
       </View>
     );
-  };
+  }; 
 
   const PercentItem = ({ completed = 20, title = "Agressividade" }) => {
     return (
@@ -393,9 +404,11 @@ export default function ListDog({ navigation }) {
 
         <View style={{ paddingTop: 10 }}>
           <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
+
+            {
+              dog?.images?.map((item)=> <TouchableOpacity
               onPress={() =>
-                handleImageSelection(require("../../assets/images/Puppy2.png"))
+                handleImageSelection({ uri: item?.url })
               }
               style={{
                 width: "20%",
@@ -403,32 +416,18 @@ export default function ListDog({ navigation }) {
                 backgroundColor: colors.main_sec,
                 borderRadius: 10,
                 marginRight: 10,
+                overflow:"hidden"
               }}
             >
               <Image
-                source={require("../../assets/images/Puppy2.png")}
+                source={item?.url
+                  ? { uri: item?.url }
+                  : require(IMAGE_PLACEHOLDER)}
                 style={{ width: "100%", height: "100%" }}
               />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                handleImageSelection(
-                  require("../../assets/images/services.jpg")
-                )
-              }
-              style={{
-                width: "20%",
-                aspectRatio: 1,
-                backgroundColor: colors.main_sec,
-                borderRadius: 10,
-                overflow: "hidden",
-              }}
-            >
-              <Image
-                source={require("../../assets/images/services.jpg")}
-                style={{ width: "100%", height: "100%" }}
-              />
-            </TouchableOpacity>
+            </TouchableOpacity>)
+            }
+            
           </View>
 
           <View
@@ -467,7 +466,7 @@ export default function ListDog({ navigation }) {
                 color={colors.main_sec}
               />
               <CustomText
-                txt="12.000"
+                txt={dog?.price ?? "-"}
                 font={FONTS.SemiBold}
                 fontSize={20}
                 color={colors.text_detail}
@@ -504,7 +503,7 @@ export default function ListDog({ navigation }) {
                 color={colors.main_sec}
               />
               <CustomText
-                txt="6"
+                txt={dog?.age ?? "-"}
                 font={FONTS.SemiBold}
                 fontSize={20}
                 color={colors.text_detail}
@@ -540,7 +539,7 @@ export default function ListDog({ navigation }) {
                 font={FONTS.SemiBold}
                 color={colors.main_sec}
               />
-              <ColorView />
+              <MainColorView item={dog} />
               <CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
             </View>
             <View
@@ -570,7 +569,7 @@ export default function ListDog({ navigation }) {
                 color={colors.main_sec}
               />
               <CustomText
-                txt="♂️"
+                txt={dog?.sex =="Macho" ? "M" : "F"}
                 font={FONTS.SemiBold}
                 fontSize={20}
                 color={colors.main_sec}
@@ -604,7 +603,7 @@ export default function ListDog({ navigation }) {
                 color={colors.main_sec}
               />
               <CustomText
-                txt="Sim"
+                txt={dog?.vacinated ? "Sim" : "Nao"}
                 font={FONTS.SemiBold}
                 fontSize={20}
                 color={colors.text_detail}
@@ -638,10 +637,11 @@ export default function ListDog({ navigation }) {
                 color={colors.main_sec}
               />
               <CustomText
-                txt="Bull Mastiff"
+                txt={dog?.race ? dog?.race.replace("_", " ") : "-"}
                 font={FONTS.SemiBold}
                 fontSize={14}
                 color={colors.text_detail}
+                styles={{padding:2, textAlign:"center"}}
               />
               <CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
             </View>
@@ -664,11 +664,14 @@ export default function ListDog({ navigation }) {
             </TouchableOpacity>
 
             <View>
-              <Text style={{ color: colors.text, fontFamily: FONTS.Regular }}>
+              <Text style={{ color: colors.text, fontFamily: FONTS.Regular, marginTop:16 }}>
+                {dog?.description ?? "Sem descricao"}
+              </Text>
+              {/* <Text style={{ color: colors.text, fontFamily: FONTS.Regular }}>
                 Texto bem grande para exemplificar o a descricao do vereruabai
                 deisbdasbsda. Texto bem grande para exemplificar o a descricao
                 do vereruabai deisbdasbsda
-              </Text>
+              </Text> */}
 
               <CustomText
                 txt="Bull Mastiff"
@@ -688,6 +691,7 @@ export default function ListDog({ navigation }) {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  marginTop:16
                 }}
               >
                 <PercentItem completed={50} />
@@ -796,7 +800,7 @@ export default function ListDog({ navigation }) {
           </View>
 
           <View style={{ marginTop: 20 }}>
-            <TitleHeader letfTitle={"Localização"} rightTitle="Maputo" />
+            <TitleHeader letfTitle={"Localização"} rightTitle={dog?.location}  />
 
             <CustomText txt="📍 Bairro Central B, Rua Bolsa Nota, n256 " />
             <MapView

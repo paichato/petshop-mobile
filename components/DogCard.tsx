@@ -8,10 +8,18 @@ import {
 import { useRouter } from "expo-router";
 import { formatDistanceToNow } from "date-fns";
 import { pt, ptBR } from "date-fns/locale";
+import { useAppData } from "../context/AppContext";
+import MainColorView from "./MainColorView";
 
 const DogCard = ({ item, user }) => {
   const { colors } = theme;
   const router = useRouter();
+  const {handleNewListDog}=useAppData();
+
+  const handleDogSelection=()=>{
+    handleNewListDog(item);
+    router.push(`(app)/listDog`);
+  }
 
   const CardFooter = () => {
     return (
@@ -118,7 +126,7 @@ const DogCard = ({ item, user }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => router.push("(app)/listDog")}
+      onPress={() => handleDogSelection()}
       style={{
         width: wp(90),
         marginTop: 40,
@@ -250,7 +258,7 @@ const DogCard = ({ item, user }) => {
             >
               |
             </Text>
-            <ColorView />
+            <MainColorView item={item} />
           </View>
 
           <View style={{ flexDirection: "row" }}>

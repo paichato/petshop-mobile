@@ -3,7 +3,7 @@ import api from "../services/api";
 
 interface IApp {
   filters?: IFilters;
-  
+  listDog?: IDog;
 }
 
 interface IFilters {
@@ -20,11 +20,36 @@ interface IRaces {
   //   user?: User;
 }
 
+interface IDog{
+  age: number;
+  color: string[];
+  createdAt: Date;
+  deleted:boolean;
+  description?:string;
+  id:string;
+  images:IImages[];
+  location:string;
+  name?:string;
+  ownerId:string;
+  price:number;
+  race:string;
+  sex:"Macho" | "Femea";
+  tags:string[];
+  title:string;
+  vacinated:boolean;
+}
+
+interface IImages{
+  public_id:string;
+  url: string;
+}
+
 
 interface AppContextData {
   getDogRaces: () => Promise<Boolean>;
   processing: Boolean;
   appData: IApp;
+  handleNewListDog: (dog: Object)=>void
 }
 
 interface AppProviderProps {
@@ -66,6 +91,12 @@ const AppProvider = ({ children }: AppProviderProps) => {
     }
   };
 
+  const handleNewListDog=(dog)=>{
+    const tmp=JSON.parse(JSON.stringify(appData));
+    tmp.listDog=dog;
+    setAppData(tmp);
+  }
+
 
 
 
@@ -76,7 +107,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
         getDogRaces,
         appData,
         processing,       
-        
+        handleNewListDog
       }}
     >
       {children}

@@ -17,7 +17,7 @@
 ☐ Add Schema Anuncio/Add that can COntain Dog or Product
 s
 
-To finish
+To finish:
 
 ✔ FInsih accoutn creation flow @done (2/21/2024, 8:04:17 PM)
 ✔ Validate fields @done (2/18/2024, 2:52:28 AM)
@@ -30,8 +30,9 @@ To finish
 ☐ Edit profile
 ☐ View Profile
 ✔ List dogs @done (2/29/2024, 12:53:54 AM)
-☐ View Dog
+✔ View Dog @high @done (4/1/2024, 9:45:03 PM)
+☐ On view dog  -> add query to list 3 dogs, location, add linking to whatsapp
 ☐ Search dogs
 ☐ Create dog
-☐ Filter Dog List
+✔ Filter Dog List @done (3/28/2024, 12:06:05 AM)
 ☐ Show dog vendor name
