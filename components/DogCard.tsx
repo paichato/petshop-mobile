@@ -18,7 +18,7 @@ const DogCard = ({ item, user }) => {
 
   const handleDogSelection=()=>{
     handleNewListDog(item);
-    router.push(`(app)/listDog`);
+    router.push({pathname:`/listDog`, params:{id:item.id}});
   }
 
   const CardFooter = () => {
@@ -223,7 +223,7 @@ const DogCard = ({ item, user }) => {
                   color: colors.main,
                 }}
               >
-                {item.ownerId ?? "Happy Colar"}
+                {item?.owner?.name ?? "Happy Colar"}
               </Text>
             </TouchableOpacity>
           </View>

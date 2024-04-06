@@ -38,26 +38,27 @@ interface IProduct {
   img: string;
   merchant: string;
 }
+const DEFAULT_FILTER=[{groupId:"h_date", id:"recent", value:"Mais recente"},{ id: "mid", value: "relevante", groupId:"h_price" },{id:"all_races", value:"Todas", groupId:"h_race"},{id:"all_loc", value:"Todas", groupId:"h_location"}];
 
 export default function ShopDogs() {
   const { colors } = theme;
   const router = useRouter();
   const [dogsData, setDogsData] = useState([]);
   const [data, setData] = useState({});
+  const [filterData, setFilterData] = useState({});
   const [page, setPage] = useState(1);
   const [filterPage, setFilterPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const modalizeRef = useRef<Modalize>(null);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(DEFAULT_FILTER);
   const [loadRaces, setLoadRaces] = useState(false);
   const [hasFilters, setHasFilters] = useState(false);
   const [filterUrl, setFilterUrl] = useState(`/dogs/search?page=${filterPage}`);
   const [races, setRaces] = useState([]);
   const {getDogRaces,appData}=useAppData();
 
-  const DEFAULT_FILTER=[{groupId:"h_date", id:"recent", value:"Mais recente"},{ id: "mid", value: "relevante", groupId:"h_price" },{id:"all_races", value:"Todas", groupId:"h_race"},{id:"all_loc", value:"Todas", groupId:"h_location"}];
 
   const {dogRaces}=appData.filters;
 
@@ -175,22 +176,33 @@ export default function ShopDogs() {
   // }, [filterPage]);
 
   const getFilteredDogs = async (url:string) => {
-    if (filterPage > data.totalPages) {
+    if (filterPage > filterData.totalPages) {
       return;
     }
 
     setLoading(true);
-    setDogsData([]);
     api
       .get(url)
       .then((res) => {
-        if (filterPage > 1 && filterPage <= data.totalPages) {
-          setDogsData(JSON.parse(JSON.stringify([...dogsData, ...res.data.result])));
+
+      const actualPage=Number(url.split("?")[1].at("5"));
+        if (actualPage > 1 ) {
+          console.log("zzzzzzzzz--------its adding more to data---------");
+          const {result,...rest}=data;
+          console.log(rest);
+          
+          
+          
+          setDogsData(prevData=>[...prevData, ...res.data.result]);
           // setDogsData([...dogsData, ...res.data.result]);
           setData(res.data);
           return;
         }
-
+        console.log("opppssss................-----------");
+        console.log(actualPage);
+        const {result,...rest}=data;
+          console.log(rest);
+        
         setDogsData(JSON.parse(JSON.stringify(res.data.result)));
         // setDogsData(res.data.result);
         setData(res.data);
@@ -215,18 +227,21 @@ export default function ShopDogs() {
     setLoading(true);
 
     api
-      .get(`/dogs/all?page=${page}`)
+      .get(`/dogs/search?page=${page}`)
       .then((res) => {
         if (page > 1 && page <= data.totalPages) {
           // setDogsData([...dogsData, ...res.data.result]);
-          setDogsData(JSON.parse(JSON.stringify([...dogsData, ...res.data.result])));
-          setData(res.data);
+          const tmp=JSON.parse(JSON.stringify([...dogsData, ...res.data.result]));
+          const tmpData=JSON.parse(JSON.stringify(res.data));
+          setDogsData(tmp);
+          setData(tmpData);
           return;
         }
 
         // setDogsData(res.data.result);
         setDogsData(JSON.parse(JSON.stringify(res.data.result)));
-        setData(res.data);
+        const tmpData=JSON.parse(JSON.stringify(res.data));
+        setData(tmpData);
         console.log(res.data);
       })
       .catch((err) => {
@@ -241,17 +256,29 @@ export default function ShopDogs() {
   };
 
   function handleFetchMore(distance) {
-    if (distance < 1) {
+    if (distance < 0.5) {
+    console.log("This is distnce:",distance);
+    
       return;
     }
-    if (data.totalPages == page) {
+    if (!data.next && !filterData.next) {
+    console.log("BOTH DOESNT HAVE NEXT");
+    
       return;
     }
 
     if(hasFilters){
       // let newpage=filterUrl.split('&').find(i=>i.includes('page')).split('=')[1]
-      setFilterPage(oldValue=>oldValue+1);
-      handleUrlParse(filterPage)
+      if(!data.next){
+
+        console.log("No next");
+        
+        return
+      }
+      setFilterPage(data?.next?.page);
+      handleUrlParse(data?.next?.page);
+
+      return
     }
 
     setLoadMore(true);
@@ -262,6 +289,8 @@ export default function ShopDogs() {
     if(selected.some((i) => i.id == item.id)){
       return
     }
+    setFilterPage(1);
+    setPage(1);
     const tmp = [...selected];
     console.log(selected);
 
@@ -282,6 +311,7 @@ export default function ShopDogs() {
     setHasFilters(false);
     setSelected(DEFAULT_FILTER);
     setPage(1);
+    setFilterPage(1);
     getDogs();
   }
 

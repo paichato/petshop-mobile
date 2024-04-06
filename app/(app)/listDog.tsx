@@ -8,8 +8,10 @@ import {
   ImageBackground,
   TextInput,
   TouchableWithoutFeedback,
+  ActivityIndicator,
+  Linking,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -18,7 +20,8 @@ import Colors from "../../constants/Colors";
 import theme from "../../styles/theme";
 import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import * as ELinking from "expo-linking"
 
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -29,6 +32,7 @@ import ImageView from "react-native-image-viewing";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppData } from "../../context/AppContext";
 import MainColorView from "../../components/MainColorView";
+import api from "../../services/api";
 
 interface IProduct {
   description: string;
@@ -43,13 +47,18 @@ interface IProduct {
 
 const IMAGE_PLACEHOLDER="../../assets/images/Puppy2.png";
 
-export default function ListDog({ navigation }) {
+export default function ListDog( ) {
   const { colors } = theme;
   const router = useRouter();
   const {appData}=useAppData();
   console.log("----------------")
   console.log(appData.listDog);
+  const navigation=useNavigation();
+  console.log("xxxxxxxxxxxxxxxxxxx");
+  console.log(navigation.getId());
+  console.log(navigation.getState());
 
+  
   const {listDog : dog}=appData
   const [selectedImage, setSelectedImage] = useState(
     dog?.images[0]?.url
@@ -57,6 +66,45 @@ export default function ListDog({ navigation }) {
                 : require("../../assets/images/Puppy2.png")
   );
   const [visibleImage, setIsVisibleImage] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [dogsData, setDogsData] = useState([]);
+  const {handleNewListDog}=useAppData();
+  const url = ELinking.useURL();
+
+
+
+  const handleDogSelection=(item)=>{
+    handleNewListDog(item);
+    // navigation.navigate('listDog');
+    // navigation.navigate('(app)/listDog') ;
+    // router.push({})
+    // .push({pathname:`(app)/listDog/[id]`, params:{id:item.id}});
+    router.replace({pathname:`(app)/listDog`, params:{id:item.id}});
+  }
+  
+  const getDogs = async () => {
+
+
+    setLoading(true);
+
+    api
+      .get(`/dogs/search?page=${1}&limit=3&race=${dog?.race}`)
+      .then((res) => {
+
+
+        // setDogsData(res.data.result);
+        setDogsData(JSON.parse(JSON.stringify(res.data.result)));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setDogsData([]);
+      })
+      .finally(() => {
+
+        setLoading(false);
+      });
+  };
 
   const handleImageSelection = (img) => {
     setSelectedImage(img);
@@ -66,6 +114,24 @@ export default function ListDog({ navigation }) {
     setIsVisibleImage(!visibleImage);
   };
 
+  const handleWhats=()=>{
+    
+    Linking.openURL(`http://api.whatsapp.com/send?phone=${dog?.ownerId}&text=Alo! Vi esta publicacao na Labrador \n \n ${url} \n \n Ainda esta disponivel? \n *Descricao*:\n *Raca*:${dog.race} \n *Preco*:${dog.price}\n *Vacinado*:${dog?.vacinated ? "Sim" : "Nao"}\n *Idade*:${dog.age} meses \n Publicado em: ${dog?.createdAt} `);
+    console.log("WHATS...")
+  }
+
+  const handleCall=()=>{
+    
+    console.log("URL:", url);
+    // console.log(`Linked to app with hostname: ${hostname}, path: ${path} and data: ${JSON.stringify(
+    //   queryParams
+    // )}`);
+    
+    // Linking.openURL(`exp://172.20.10.10:19000/`);
+    Linking.openURL(`tel:${dog?.ownerId}`);
+    console.log("WHATS...")
+  }
+
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -73,6 +139,10 @@ export default function ListDog({ navigation }) {
   const origin = { latitude: 37.78825, longitude: -122.4324 };
 
   const destination = { latitude: 37.78825, longitude: -122.4929 };
+
+  useEffect(()=>{
+    getDogs();
+  },[])
 
   const Divider = () => {
     return (
@@ -309,35 +379,7 @@ export default function ListDog({ navigation }) {
     );
   };
 
-  const ColorView = () => {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          width: "25%",
-          alignItems: "center",
-          justifyContent: "space-around",
-        }}
-      >
-        <View
-          style={{
-            width: 15,
-            aspectRatio: 1,
-            backgroundColor: colors.main,
-            borderRadius: 100,
-          }}
-        ></View>
-        <View
-          style={{
-            width: 15,
-            aspectRatio: 1,
-            backgroundColor: colors.main_sec,
-            borderRadius: 100,
-          }}
-        ></View>
-      </View>
-    );
-  }; 
+
 
   const PercentItem = ({ completed = 20, title = "Agressividade" }) => {
     return (
@@ -365,6 +407,36 @@ export default function ListDog({ navigation }) {
       </View>
     );
   };
+
+  const MoreDogsCard=({item})=>{
+    return <>
+    <TouchableOpacity
+                onPress={() => handleDogSelection(item)}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
+              >
+                <Image
+                  source={item.images[0].url ? {uri:item.images[0].url}   : require("../../assets/images/Puppy2.png")}
+                  style={{
+                    width: "30%",
+                    aspectRatio: 1,
+                    backgroundColor: colors.main_sec,
+                    borderRadius: 10,
+                  }}
+                />
+                <View style={{ width: "65%" }}>
+                  <CustomText txt={item?.race?.replace("_"," ")} />
+                  <CustomText txt={item?.location} />
+                  <CustomText fontSize={20} txt={`${item?.price}MZN`} />
+                </View>
+              </TouchableOpacity>
+              <Divider />
+    </>
+  }
 
   return (
     <>
@@ -649,7 +721,7 @@ export default function ListDog({ navigation }) {
 
           <View style={{ marginTop: 20, width: "90%" }}>
             <TitleHeader letfTitle={"Acerca da Cão"} />
-            <TouchableOpacity style={{ width: "30%" }}>
+            {dog?.vacinated && <TouchableOpacity style={{ width: "30%" }}>
               <CustomText
                 txt="vacinado 💉"
                 styles={{
@@ -661,7 +733,7 @@ export default function ListDog({ navigation }) {
                   padding: 5,
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity>}
 
             <View>
               <Text style={{ color: colors.text, fontFamily: FONTS.Regular, marginTop:16 }}>
@@ -674,7 +746,7 @@ export default function ListDog({ navigation }) {
               </Text> */}
 
               <CustomText
-                txt="Bull Mastiff"
+                txt={dog?.race?.replace("_", " ")}
                 fontSize={18}
                 font={FONTS.SemiBold}
                 styles={{ marginTop: 20 }}
@@ -701,83 +773,13 @@ export default function ListDog({ navigation }) {
               </View>
             </View>
 
-            <View style={{ marginTop: 20 }}>
-              <TitleHeader letfTitle={"Mais do tipo(48)"} />
-              <TouchableOpacity
-                onPress={() => router.push("(app)/listDog")}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: 10,
-                }}
-              >
-                <Image
-                  source={require("../../assets/images/Puppy2.png")}
-                  style={{
-                    width: "30%",
-                    aspectRatio: 1,
-                    backgroundColor: colors.main_sec,
-                    borderRadius: 10,
-                  }}
-                />
-                <View style={{ width: "65%" }}>
-                  <CustomText txt="Rottweiler" />
-                  <CustomText txt="Rottweiler" />
-                  <CustomText fontSize={20} txt="12.000.00MZN" />
-                </View>
-              </TouchableOpacity>
-              <Divider />
-              <TouchableOpacity
-                onPress={() => router.push("(app)/listDog")}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: 10,
-                }}
-              >
-                <Image
-                  source={require("../../assets/images/petshop.jpeg")}
-                  style={{
-                    width: "30%",
-                    aspectRatio: 1,
-                    backgroundColor: colors.main_sec,
-                    borderRadius: 10,
-                  }}
-                />
-                <View style={{ width: "65%" }}>
-                  <CustomText txt="Rottweiler" />
-                  <CustomText txt="Rottweiler" />
-                  <CustomText fontSize={20} txt="12.000.00MZN" />
-                </View>
-              </TouchableOpacity>
-              <Divider />
-              <TouchableOpacity
-                onPress={() => router.push("(app)/listDog")}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: 10,
-                }}
-              >
-                <Image
-                  source={require("../../assets/images/Puppy2.png")}
-                  style={{
-                    width: "30%",
-                    aspectRatio: 1,
-                    backgroundColor: colors.main_sec,
-                    borderRadius: 10,
-                  }}
-                />
-                <View style={{ width: "65%" }}>
-                  <CustomText txt="Rottweiler" />
-                  <CustomText txt="Rottweiler" />
-                  <CustomText fontSize={20} txt="12.000.00MZN" />
-                </View>
-              </TouchableOpacity>
-              <Divider />
+             <View style={{ marginTop: 20 }}>
+              { dogsData.length > 1 &&<>
+              <TitleHeader letfTitle={"Mais do tipo"} />
+              {dogsData.map(item=>{
+                return loading ? <ActivityIndicator color={"orange"} size={"large"}/> : item?.id !== dog?.id && <MoreDogsCard item={item}/>
+              })}
+             
               <View
                 style={{
                   width: "100%",
@@ -786,7 +788,7 @@ export default function ListDog({ navigation }) {
                   marginTop: 10,
                 }}
               >
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     padding: 5,
                     backgroundColor: colors.text_dark,
@@ -794,8 +796,10 @@ export default function ListDog({ navigation }) {
                   }}
                 >
                   <CustomText txt="Ver mais +" color={colors.white} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
+              </>
+              }
             </View>
           </View>
 
@@ -912,6 +916,7 @@ export default function ListDog({ navigation }) {
         />
       </ScrollView>
       <TouchableOpacity
+      onPress={handleCall}
         style={{
           position: "absolute",
           bottom: 20,
@@ -936,7 +941,7 @@ export default function ListDog({ navigation }) {
               marginLeft: 10,
             }}
           >
-            Agendar marcação
+            {dog?.ownerId}
           </Text>
         </View>
         <Text
@@ -949,7 +954,7 @@ export default function ListDog({ navigation }) {
         >
           |
         </Text>
-        <TouchableOpacity style={{ width: "10%" }}>
+        <TouchableOpacity onPress={handleWhats} style={{ width: "10%" }}>
           <Ionicons name="logo-whatsapp" size={24} color={colors.white} />
         </TouchableOpacity>
       </TouchableOpacity>

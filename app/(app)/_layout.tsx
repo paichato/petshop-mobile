@@ -1,6 +1,5 @@
-import { Redirect, Stack } from "expo-router";
-import { useSession } from "../../context/auth";
-import { Text } from "react-native";
+import {  Stack } from "expo-router";
+
 
 export default function AppLayout() {
   // const { session, isLoading } = useSession();
@@ -19,5 +18,5 @@ export default function AppLayout() {
   // }
 
   // This layout can be deferred because it's not the root layout.
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return <Stack key={()=>String(Date.now())} getId={({ params }) => String(Date.now())} screenOptions={{ headerShown: false }}  />;
 }
