@@ -16,7 +16,7 @@ import { Octicons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { Link, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import FONTS from "../../constants/FONTS";
+import FONTS, { AVAILABLE_FONTS } from "../../constants/FONTS";
 
 interface IProduct {
   description: string;
@@ -41,16 +41,17 @@ export default function GoPro() {
           alignItems: "center",
           width: "100%",
           marginTop: 20,
+          paddingHorizontal:"5%"
         }}
       >
         <View style={{ width: "25%" }}>
-          <Octicons name={name as any} size={28} color={colors.title_dark} />
+          <Octicons name={name as any} size={28} color={colors.main_sec} />
         </View>
         <Text
           style={{
             fontFamily: FONTS.Regular,
             fontSize: 16,
-            color: colors.title_dark,
+            color: colors.text,
             width: "75%",
           }}
         >
@@ -61,7 +62,7 @@ export default function GoPro() {
   };
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
         justifyContent: "space-between",
@@ -70,9 +71,9 @@ export default function GoPro() {
       }}
     >
       <LinearGradient
-        colors={[colors.main_sec, colors.main_alt]}
+        colors={[colors.main_sec, colors.main_sec_50]}
         style={{
-          height: hp(40),
+          height: hp(50),
           width: wp(100),
           borderRadius: 5,
           padding: 20,
@@ -82,8 +83,9 @@ export default function GoPro() {
       >
         <Text
           style={{
-            fontSize: 24,
+            fontSize: 20,
             color: colors.white,
+            fontFamily:AVAILABLE_FONTS.Bold,
             fontWeight: "800",
             width: "70%",
           }}
@@ -96,11 +98,12 @@ export default function GoPro() {
             height: 300,
             resizeMode: "contain",
             overflow: "hidden",
-            bottom: -100,
+            bottom: hp(-1),
             position: "absolute",
           }}
         />
         <TouchableOpacity
+        onPress={()=>router.back()}
           style={{
             width: 40,
             height: 40,
@@ -124,7 +127,7 @@ export default function GoPro() {
         </TouchableOpacity>
       </LinearGradient>
 
-      <View style={{ height: hp(60), width: "100%", alignItems: "center" }}>
+      <View style={{ height: hp(50), width: "100%", alignItems: "center" }}>
         <View style={{ width: "100%", paddingHorizontal: 40 }}>
           <DescItem />
           <DescItem name="file" />
@@ -136,11 +139,11 @@ export default function GoPro() {
             style={{
               width: "100%",
               height: hp(10),
-              backgroundColor: "red",
+              backgroundColor: colors.main_sec,
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 10,
-              shadowColor: "red",
+              shadowColor: colors.main_sec,
               shadowOffset: {
                 width: 0,
                 height: 4,
@@ -174,6 +177,6 @@ export default function GoPro() {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
