@@ -70,8 +70,8 @@ export default function ShopDogs() {
       id: "h_date", header: "Filtrar por",
       options: [
         
-        { id: "recent", value: "Mais recente", filter: "order=asc" },
-        { id: "old", value: "Antigas", filter: "order=desc" },
+        { id: "recent", value: "Mais recente", filter: "order=desc" },
+        { id: "old", value: "Antigas", filter: "order=asc" },
       ]
     },
     {
@@ -605,18 +605,8 @@ export default function ShopDogs() {
     );
   };
 
-  const FilterWrapper=({item})=>{
-    return <View style={{marginTop:8, padding:8}}>
-      <CustomText fontSize={16} font={AVAILABLE_FONTS.SemiBold} color={colors.main_sec} txt={item.header}/>
-      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"flex-start", flexWrap:"wrap"}}>
-          {item.options.map((el)=><SelectorItem groupId={item.id} item={el}/>)}
-      </View>
-    </View>
-  }
-
-  const FilterModal = () => {
-    return <View>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: colors.line, marginTop: 20 }}>
+  const FilterHeader=()=>{
+  return <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: colors.line, marginTop: 20 }}>
         <TouchableOpacity onPress={handleClear}><CustomText
           txt="Limpar"
           font={AVAILABLE_FONTS.Regular}
@@ -637,6 +627,20 @@ export default function ShopDogs() {
           fontSize={16}
         /></TouchableOpacity>
       </View>
+  }
+
+  const FilterWrapper=({item})=>{
+    return <View style={{marginTop:8, padding:8}}>
+      <CustomText fontSize={16} font={AVAILABLE_FONTS.SemiBold} color={colors.main_sec} txt={item.header}/>
+      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"flex-start", flexWrap:"wrap"}}>
+          {item.options.map((el)=><SelectorItem groupId={item.id} item={el}/>)}
+      </View>
+    </View>
+  }
+
+  const FilterModal = () => {
+    return <View>
+
       {filterOptions.map((element)=><FilterWrapper item={element}/>)}
     </View>
   }
@@ -681,11 +685,12 @@ export default function ShopDogs() {
       <FlatList
         data={dogsData}
         renderItem={({ item }) => <DogCard item={item} />}
+        keyExtractor={(item)=>item.id}
         horizontal={false}
         refreshing={refreshing}
         onRefresh={onRefresh}
         contentContainerStyle={{}}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.5}
         onEndReached={({ distanceFromEnd }) => {
           handleFetchMore(distanceFromEnd);
         }}
@@ -698,34 +703,6 @@ export default function ShopDogs() {
         }
       />
 
-      {/* <ScrollView
-        style={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-        refreshControl={
-          <RefreshControl
-            colors={colors.text_dark}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-        
-      >
-        {dogsData.map((item) => (
-          <DogCard item={item} />
-        ))} */}
-      {/* <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} />
-        <ShopItem img={require("../../assets/images/Puppy2.png")} /> */}
-      {/* </ScrollView> */}
       <TouchableOpacity onPress={onOpenFilter}
         style={{
           position: "absolute",
@@ -739,6 +716,7 @@ export default function ShopDogs() {
         <Octicons name="filter" size={24} color={colors.white} />
       </TouchableOpacity>
       <Modalize
+      HeaderComponent={()=><FilterHeader/>}
         // modalStyle={{
         //   height: hp("20%"),
         //   width: wp("40%"),
