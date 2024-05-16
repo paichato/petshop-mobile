@@ -125,7 +125,7 @@ export default function Home() {
           <TouchableOpacity onPress={() => router.push("(app)/search")}>
             <Octicons name="search" size={24} color={colors.text_dark} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push("(app)/GoPro")}>
+          <TouchableOpacity onPress={() => router.push("(app)/settings")}>
             <Octicons name="people" size={24} color={colors.text_dark} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleLogout()}>
