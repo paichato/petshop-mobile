@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useRef } from 'react'
 import theme from '../../styles/theme'
 import { Octicons } from '@expo/vector-icons';
 import CustomText from '../../components/CustomText';
@@ -10,10 +10,18 @@ import {
   } from "react-native-responsive-screen";
 import DogCard from '../../components/DogCard';
 import { DOG_LIST } from '../../utils/mocks';
+import { Modalize } from 'react-native-modalize';
+import { useRouter } from 'expo-router';
 
 export default function Settings() {
 
     const {colors, fonts}=theme;
+    const modalizeRef = useRef<Modalize>(null);
+    const router = useRouter();
+
+    const onOpen = () => {
+      modalizeRef.current?.open();
+    };
 
     const SettingButton=({title, rightText='Ver mais'})=>{
         return  <TouchableOpacity  style={{padding:20,marginTop:hp(2), backgroundColor:colors.white, borderRadius:20, paddingTop:20, width:'100%', elevation:7}}>
@@ -48,7 +56,7 @@ export default function Settings() {
                 <Octicons name='chevron-left' size={24} color={colors.text}/>
             </TouchableOpacity>
             <CustomText txt='Perfil' fontSize={20} font={FONTS.Bold}/>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("(app)/newPub11")}>
                 <Octicons name='plus' size={24} color={colors.text}/>
             </TouchableOpacity>
         </View>
@@ -95,6 +103,19 @@ export default function Settings() {
        <SettingButton title='Meus Guardados'/>
        <SettingButton title='Editar Perfil' rightText='>'/>
        <SettingButton title='Terminar sessao' rightText='>'/>
+       <Modalize
+        // modalStyle={{
+        //   height: hp("20%"),
+        //   width: wp("40%"),
+        //   alignSelf: "center",
+        // }}
+        disableScrollIfPossible
+        handlePosition="inside"
+        modalHeight={hp("50%")}
+        ref={modalizeRef}
+      >
+       
+      </Modalize>
     </ScrollView>
   )
 }
