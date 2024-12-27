@@ -242,7 +242,8 @@ export default function ListDog( ) {
             alignSelf: "center",
           }}
         >
-          <View
+          <TouchableOpacity
+          onPress={()=>router.back()}
             style={{
               backgroundColor: "rgba(255,255,255,0.4)",
               borderRadius: 100,
@@ -253,7 +254,7 @@ export default function ListDog( ) {
             }}
           >
             <Octicons name="chevron-left" size={24} color={colors.text} />
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               backgroundColor: "rgba(255,255,255,0.4)",
@@ -275,7 +276,7 @@ export default function ListDog( ) {
     return (
       <>
         <InnerHeader />
-        <View
+        <TouchableOpacity
           style={{
             width: "90%",
             height: hp(20),
@@ -374,7 +375,7 @@ export default function ListDog( ) {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       </>
     );
   };
@@ -436,6 +437,225 @@ export default function ListDog( ) {
               </TouchableOpacity>
               <Divider />
     </>
+  }
+
+  const DogDetailsWrapper=({item})=>{
+    return <View
+    style={{
+      width: wp(90),
+      flexDirection: "row",
+      marginTop: 20,
+      justifyContent: "center",
+      flexWrap: "wrap",
+      flexShrink: 2,
+    }}
+  >
+    <View
+      style={{
+        width: "30%",
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Preço"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <CustomText
+        txt={dog?.price ?? "-"}
+        font={FONTS.SemiBold}
+        fontSize={20}
+        color={colors.text_detail}
+      />
+      <CustomText
+        txt="MZN"
+        font={FONTS.SemiBold}
+        color={colors.text_detail}
+      />
+    </View>
+    <View
+      style={{
+        width: "30%",
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Idade"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <CustomText
+        txt={dog?.age ?? "-"}
+        font={FONTS.SemiBold}
+        fontSize={20}
+        color={colors.text_detail}
+      />
+      <CustomText
+        txt="Meses"
+        font={FONTS.SemiBold}
+        color={colors.text_detail}
+      />
+    </View>
+    <View
+      style={{
+        width: "30%",
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Cor"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <MainColorView item={dog} />
+      <CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
+    </View>
+    <View
+      style={{
+        width: "30%",
+        marginTop: 10,
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Sexo"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <CustomText
+        txt={dog?.sex =="Macho" ? "M" : "F"}
+        font={FONTS.SemiBold}
+        fontSize={20}
+        color={colors.text_detail}
+      />
+      <CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
+    </View>
+    <View
+      style={{
+        width: "30%",
+        marginTop: 10,
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Vacinado"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <CustomText
+        txt={dog?.vacinated ? "Sim" : "Nao"}
+        font={FONTS.SemiBold}
+        fontSize={20}
+        color={colors.text_detail}
+      />
+      <CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
+    </View>
+    <View
+      style={{
+        width: "30%",
+        marginTop: 10,
+        marginRight: 10,
+        aspectRatio: 1,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.text_dark,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+      }}
+    >
+      <CustomText
+        txt="Raça"
+        font={FONTS.SemiBold}
+        color={colors.main_sec}
+      />
+      <CustomText
+        txt={dog?.race ? dog?.race.replace("_", " ") : "-"}
+        font={FONTS.SemiBold}
+        fontSize={14}
+        color={colors.text_detail}
+        styles={{padding:2, textAlign:"center"}}
+      />
+      <CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
+    </View>
+  </View>
   }
 
   return (
@@ -502,222 +722,11 @@ export default function ListDog( ) {
             
           </View>
 
-          <View
-            style={{
-              width: wp(90),
-              flexDirection: "row",
-              marginTop: 20,
-              justifyContent: "center",
-              flexWrap: "wrap",
-              flexShrink: 2,
-            }}
-          >
-            <View
-              style={{
-                width: "30%",
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Preço"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <CustomText
-                txt={dog?.price ?? "-"}
-                font={FONTS.SemiBold}
-                fontSize={20}
-                color={colors.text_detail}
-              />
-              <CustomText
-                txt="MZN"
-                font={FONTS.SemiBold}
-                color={colors.text_detail}
-              />
-            </View>
-            <View
-              style={{
-                width: "30%",
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Idade"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <CustomText
-                txt={dog?.age ?? "-"}
-                font={FONTS.SemiBold}
-                fontSize={20}
-                color={colors.text_detail}
-              />
-              <CustomText
-                txt="Meses"
-                font={FONTS.SemiBold}
-                color={colors.text_detail}
-              />
-            </View>
-            <View
-              style={{
-                width: "30%",
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "space-evenly",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Cor"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <MainColorView item={dog} />
-              <CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
-            </View>
-            <View
-              style={{
-                width: "30%",
-                marginTop: 10,
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Sexo"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <CustomText
-                txt={dog?.sex =="Macho" ? "M" : "F"}
-                font={FONTS.SemiBold}
-                fontSize={20}
-                color={colors.main_sec}
-              />
-              <CustomText txt=" " font={FONTS.SemiBold} color={colors.text} />
-            </View>
-            <View
-              style={{
-                width: "30%",
-                marginTop: 10,
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Vacinado"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <CustomText
-                txt={dog?.vacinated ? "Sim" : "Nao"}
-                font={FONTS.SemiBold}
-                fontSize={20}
-                color={colors.text_detail}
-              />
-              <CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
-            </View>
-            <View
-              style={{
-                width: "30%",
-                marginTop: 10,
-                marginRight: 10,
-                aspectRatio: 1,
-                backgroundColor: colors.white,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: colors.text_dark,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.32,
-                shadowRadius: 5.46,
-
-                elevation: 9,
-              }}
-            >
-              <CustomText
-                txt="Raça"
-                font={FONTS.SemiBold}
-                color={colors.main_sec}
-              />
-              <CustomText
-                txt={dog?.race ? dog?.race.replace("_", " ") : "-"}
-                font={FONTS.SemiBold}
-                fontSize={14}
-                color={colors.text_detail}
-                styles={{padding:2, textAlign:"center"}}
-              />
-              <CustomText txt="" font={FONTS.SemiBold} color={colors.text} />
-            </View>
+          <View>
+            
           </View>
+
+          <DogDetailsWrapper item={dog}/>
 
           <View style={{ marginTop: 20, width: "90%" }}>
             <TitleHeader letfTitle={"Acerca da Cão"} />

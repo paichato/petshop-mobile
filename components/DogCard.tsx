@@ -27,7 +27,7 @@ const DogCard = ({ item, user }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           marginTop: 10,
         }}
       >
@@ -51,7 +51,7 @@ const DogCard = ({ item, user }) => {
             📍{item?.location}
           </Text>
         </View>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text
             style={{
               color: colors.white,
@@ -64,7 +64,20 @@ const DogCard = ({ item, user }) => {
           >
             verificado ✨
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+          <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "400",
+                color: colors.text_detail,
+              }}
+            >
+              {formatDistanceToNow(new Date(item.createdAt), {
+                includeSeconds: true,
+                addSuffix: true,
+                locale: ptBR,
+              })}
+            </Text>
         {item?.vacinated && (
           <TouchableOpacity>
             <Text
@@ -82,7 +95,7 @@ const DogCard = ({ item, user }) => {
           </TouchableOpacity>
         )}
         <Text
-          style={{ color: colors.main_sec, fontSize: 18, fontWeight: "900" }}
+          style={{ color: colors.text_detail, fontSize: 14 }}
         >
           {item?.age} meses
         </Text>
@@ -123,6 +136,40 @@ const DogCard = ({ item, user }) => {
       </View>
     );
   };
+
+  const ColorSection=({item})=>{
+    return <View
+    style={{
+      flexDirection: "row",
+      marginVertical: 5,
+      alignItems: "center",
+    }}
+  >
+    <Text
+      style={{
+        color: colors.text_dark,
+        fontSize: 14,
+        fontWeight: "800",
+        borderRadius: 5,
+        padding: 5,
+      }}
+    >
+      {item?.race}
+    </Text>
+    {/* <Text
+      style={{
+        color: colors.text,
+        fontSize: 12,
+        fontWeight: "800",
+        borderRadius: 5,
+        padding: 5,
+      }}
+    >
+      |
+    </Text> */}
+    <MainColorView item={item} />
+  </View>
+  }
 
   return (
     <TouchableOpacity
@@ -172,94 +219,40 @@ const DogCard = ({ item, user }) => {
           />
         </View>
 
-        <View style={{ width: "65%", marginLeft: 10 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+        <View style={{ width: "65%", marginLeft: 10, justifyContent:"space-between" }}>
+        <ColorSection item={item} />
+          <View style={{flexDirection:'row'}}>
+            <View style={{width:30, height:30, backgroundColor:colors.bg_primary, borderRadius:50}}>
+
+            </View>
+            <View style={{flexDirection:'column', flex:1, marginLeft:10}}>
             <Text
               style={{
-                fontSize: 18,
-                fontWeight: "800",
-                color: colors.main_sec,
+                fontSize: 14,
+                color: colors.text_detail,
                 width: "70%",
               }}
               numberOfLines={1}
             >
-              {item?.title ?? "-"}
+          
+              Publicado por
             </Text>
             <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "400",
-                color: colors.text_detail,
-              }}
-            >
-              {formatDistanceToNow(new Date(item.createdAt), {
-                includeSeconds: true,
-                addSuffix: true,
-                locale: ptBR,
-              })}
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "800",
-                color: colors.text_dark,
-              }}
-            >
-              Vendedor:
-            </Text>
-            <TouchableOpacity>
-              <Text
                 style={{
                   fontSize: 14,
-                  fontWeight: "800",
-                  color: colors.main,
+                  // fontWeight: "800",
+                  color: colors.text_dark,
                 }}
               >
                 {item?.owner?.name ?? "Happy Colar"}
               </Text>
-            </TouchableOpacity>
+            </View>
           </View>
+         
+   
 
-          <Text style={{ color: colors.text }}>{item?.description ?? "-"}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 5,
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: colors.text,
-                fontSize: 12,
-                fontWeight: "800",
-                borderRadius: 5,
-                padding: 5,
-              }}
-            >
-              {item?.race}
-            </Text>
-            <Text
-              style={{
-                color: colors.text,
-                fontSize: 12,
-                fontWeight: "800",
-                borderRadius: 5,
-                padding: 5,
-              }}
-            >
-              |
-            </Text>
-            <MainColorView item={item} />
-          </View>
+         
+        
 
           <View style={{ flexDirection: "row" }}>
             <Text

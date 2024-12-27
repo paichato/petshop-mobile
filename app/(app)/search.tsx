@@ -20,6 +20,7 @@ import { Link, useRouter } from "expo-router";
 import CustomText from "../../components/CustomText";
 import FONTS from "../../constants/FONTS";
 import Carousel from "react-native-snap-carousel";
+import SearchVerticalItem from "../../components/SearchVerticalItem";
 
 interface IProduct {
   description: string;
@@ -77,8 +78,8 @@ export default function Search() {
           padding: 10,
         }}
       >
-        <Text style={{ fontSize: 14, fontWeight: "800" }}>Happy Colar</Text>
-        <View
+        <Text style={{ fontSize: 14, fontWeight: "800", marginVertical:10 }}>Happy Colar</Text>
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -92,7 +93,7 @@ export default function Search() {
           <Octicons name="star-fill" size={14} color={colors.main_sec} />
           <Octicons name="star-fill" size={14} color={colors.main_sec} />
           <Octicons name="star" size={14} color={colors.main_sec} />
-        </View>
+        </View> */}
         <Image
           source={img}
           style={{
@@ -103,10 +104,10 @@ export default function Search() {
           }}
           resizeMode="contain"
         />
-        <Text style={{ color: colors.text }}>
-          Keep your dog teeth healthy and cleanwith the Nerf dogs sp...
+        <Text style={{ color: colors.text, marginTop:10 }}>
+          Keep your dog teeth Nerf dogs sp...
         </Text>
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             marginVertical: 5,
@@ -127,9 +128,9 @@ export default function Search() {
           >
             Kuluka
           </Text>
-        </View>
+        </View> */}
         <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginTop:20 }}>
             <Text
               style={{
                 color: colors.main_sec,
@@ -140,9 +141,10 @@ export default function Search() {
               14.000
             </Text>
             <Text
-              style={{ color: colors.text, fontSize: 16, fontWeight: "300" }}
+              style={{ color: colors.text, fontSize: 14, fontWeight: "300" }}
             >
-              .00MZN
+              {/* .00MZN */}
+              MZN
             </Text>
           </View>
 
@@ -282,7 +284,7 @@ export default function Search() {
                 borderRadius: 5,
               }}
             >
-              <Text style={{ fontWeight: "200", fontSize: 10 }}>1/6</Text>
+              {/* <Text style={{ fontWeight: "200", fontSize: 10 }}>1/6</Text> */}
             </View>
             <Image
               source={img}
@@ -292,11 +294,11 @@ export default function Search() {
                 backgroundColor: colors.bg_primary,
                 borderRadius: 10,
               }}
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
 
-          <View style={{ width: "65%", marginLeft: 10 }}>
+          <View style={{ width: "65%", marginLeft: 10, justifyContent:'space-between' }}>
             <View
               style={{
                 flexDirection: "row",
@@ -304,7 +306,7 @@ export default function Search() {
                 justifyContent: "space-between",
               }}
             >
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 18,
                   fontWeight: "800",
@@ -312,19 +314,11 @@ export default function Search() {
                 }}
               >
                 Happy Colar
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  color: colors.text_detail,
-                }}
-              >
-                ha 5 minutos
-              </Text>
+              </Text> */}
+            
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 14,
                   fontWeight: "800",
@@ -332,16 +326,16 @@ export default function Search() {
                 }}
               >
                 Vendedor:
-              </Text>
+              </Text> */}
               <TouchableOpacity>
                 <Text
                   style={{
                     fontSize: 14,
                     fontWeight: "800",
-                    color: colors.main,
+                    color: colors.text_dark,
                   }}
                 >
-                  {" "}
+                 
                   Happy Colar
                 </Text>
               </TouchableOpacity>
@@ -382,7 +376,7 @@ export default function Search() {
               <ColorView />
             </View>
 
-            <View style={{ flexDirection: "row" }}>
+            {/* <View style={{ flexDirection: "row" }}>
               <Text
                 style={{
                   color: colors.main_sec,
@@ -397,10 +391,22 @@ export default function Search() {
               >
                 .00MZN
               </Text>
-            </View>
+            </View> */}
+
+<Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  color: colors.text_detail,
+                }}
+              >
+                ha 5 minutos
+              </Text>
           </View>
+          
         </View>
-        <CardFooter />
+        
+        {/* <CardFooter /> */}
       </TouchableOpacity>
     );
   };
@@ -584,8 +590,8 @@ export default function Search() {
             justifyContent: "space-between",
           }}
         >
-          <ShopItemProduct />
-          <ShopItemProduct img={require("../../assets/images/Puppy2.png")} />
+          <SearchVerticalItem />
+          <SearchVerticalItem desc="Maltes" img={require("../../assets/images/Puppy2.png")} />
 
           <ShopItem img={require("../../assets/images/vet.jpeg")} />
           <ShopItem img={require("../../assets/images/services.jpg")} />

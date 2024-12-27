@@ -657,8 +657,12 @@ export default function ShopDogs() {
           marginTop: 10,
         }}
       >
+     
+        <TouchableOpacity onPress={()=>router.back()}>
+        <Octicons name="chevron-left" size={24} color={colors.header} />
+        </TouchableOpacity>
+
         <Octicons name="apps" size={24} color={colors.header} />
-        <Octicons name="credit-card" size={24} color={colors.header} />
       </View>
 
       <View>
